@@ -8,7 +8,7 @@ on:
 jobs:
   fetch_air:
     name: Fetch and pre-process air data
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       # 1️⃣ Checkout repo
       - name: Checkout repository
