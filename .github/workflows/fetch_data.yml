@@ -19,7 +19,7 @@ jobs:
 
       # 2️⃣ Install uv
       - name: Install uv
-        run: pipx install uv
+        run: pip install uv
 
       # 3️⃣ Setup DVC
       - name: Setup DVC
