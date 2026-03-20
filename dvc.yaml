@@ -7,7 +7,7 @@ stages:
       - fetch.url
     outs:
       - data/raw/lokacija.json:
-          cache: true
+          cache: false
     always_changed: true
 
   preprocess:
