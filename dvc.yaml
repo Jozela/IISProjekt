@@ -1,0 +1,22 @@
+stages:
+  fetch:
+    cmd: uv run python src/data/fetch_spin_data.py
+    deps:
+      - src/data/fetch_spin_data.py
+    params:
+      - fetch.url
+    outs:
+      - data/raw/spin/lokacija.json:
+          cache: true
+    always_changed: true
+
+  preprocess:
+    cmd: uv run python src/data/preprocess_spin_data.py
+    deps:
+      - src/data/preprocess_spin_data.py
+      - data/raw/spin/lokacija.json
+    params:
+      - preprocess.station
+    outs:
+      - data/preprocessed/spin:
+          cache: true
