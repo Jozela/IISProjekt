@@ -1,20 +1,28 @@
 import requests
 import os
 import yaml
-# Neposredni URL do lokacija.json
+import json
+
+# Load parameters
 params = yaml.safe_load(open("params.yaml"))["fetch"]
-# URL to fetch the XML data
 json_url = params["url"]
-# Ustvari mapo data/raw, če še ne obstaja
+
+# Ensure folder exists
 os.makedirs("data/raw", exist_ok=True)
 
-# Prenesi JSON datoteko
+# Fetch the data
 response = requests.get(json_url)
-response.raise_for_status()  # preveri, če je prenos uspešen
+response.raise_for_status()  # check for download errors
 
-# Shrani datoteko v data/raw
+# Parse JSON safely
+try:
+    data = response.json()  # <-- this converts response text into a Python object
+except ValueError as e:
+    raise ValueError(f"Response is not valid JSON:\n{response.text[:500]}") from e
+
+# Write JSON to file with proper formatting
 file_path = "data/raw/lokacija.json"
 with open(file_path, "w", encoding="utf-8") as f:
-    f.write(response.text)
+    json.dump(data, f, indent=2)
 
 print(f"Datoteka je uspešno shranjena kot {file_path}")

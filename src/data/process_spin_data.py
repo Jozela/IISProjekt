@@ -1,7 +1,8 @@
 import json
 import pandas as pd
 import os
-
+import yaml
+params = yaml.safe_load(open("params.yaml"))["preprocess"]
 json_file = "data/raw/lokacija.json"
 csv_file = "data/preprocessed/nesrece_v_cestnem_prometu.csv"
 

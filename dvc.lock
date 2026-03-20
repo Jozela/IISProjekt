@@ -1,0 +1,36 @@
+schema: '2.0'
+stages:
+  fetch:
+    cmd: uv run python src/data/fetch_spin_data.py
+    deps:
+    - path: src/data/fetch_spin_data.py
+      hash: md5
+      md5: bdc55bcdb2aebe198ef14a388b272aca
+      size: 758
+    params:
+      params.yaml:
+        fetch.url: https://spin3.sos112.si/javno/assets/data/lokacija.json
+    outs:
+    - path: data/raw/lokacija.json
+      hash: md5
+      md5: 7318e7a8e6599649aa0b1efbb041b5ba
+      size: 37408
+  preprocess:
+    cmd: uv run python src/data/process_spin_data.py
+    deps:
+    - path: data/raw/lokacija.json
+      hash: md5
+      md5: 7318e7a8e6599649aa0b1efbb041b5ba
+      size: 37408
+    - path: src/data/process_spin_data.py
+      hash: md5
+      md5: b2f5bbc7056ffac04c8e610cabad52a4
+      size: 1386
+    params:
+      params.yaml:
+        preprocess.station: all
+    outs:
+    - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
+      hash: md5
+      md5: 952d476000d052ef86d3fc81b27aa8d6
+      size: 950
