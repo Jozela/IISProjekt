@@ -1,68 +1,52 @@
 name: Fetch data on schedule
-
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'  # vsak dan ob polnoči
+    - cron: '0 0 * * *'
 
 jobs:
   fetch_air:
     name: Fetch and pre-process air data
     runs-on: self-hosted
     steps:
-      # 1️⃣ Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT_TOKEN }}
           fetch-depth: 0
 
-      # 2️⃣ Install uv
-      - name: Install uv
-        run: pip install uv
-
-      # 3️⃣ Setup DVC
-      - name: Setup DVC
-        uses: iterative/setup-dvc@v1
-
-      # 4️⃣ Setup Python
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
 
-      # 5️⃣ Setup Git
+      - name: Install uv
+        run: pip install uv
+
+      - name: Setup DVC
+        uses: iterative/setup-dvc@v1
+
       - name: Setup Git
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
 
-      # 6️⃣ Install dependencies
       - name: Install dependencies
         run: uv sync --frozen
 
-      # 7️⃣ Clean workspace BEFORE setting credentials
-      - name: Clean workspace
-        run: |
-          git reset --hard
-          git clean -fdx
-
-      # 8️⃣ DVC remote credentials (AFTER clean, so they aren't wiped)
       - name: Setup DVC remote
         run: |
           dvc remote modify origin --local access_key_id ${{ secrets.DAGSHUB_ACCESS_KEY_ID }}
           dvc remote modify origin --local secret_access_key ${{ secrets.DAGSHUB_SECRET_ACCESS_KEY }}
 
-      # 9️⃣ Run DVC pipeline
       - name: Run DVC pipeline
         run: |
           dvc pull --force
           dvc repro
           dvc push
 
-      # 🔟 Commit and push dvc.lock if updated
       - name: Commit DVC changes
         run: |
           git add dvc.lock
           git commit -m "Update dvc.lock on $(date)" || echo "No changes to commit"
-          git push || echo "Git push skipped, probably no new commits"
+          git push || echo "Git push skipped"
