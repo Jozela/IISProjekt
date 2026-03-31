@@ -13,15 +13,15 @@ stages:
     outs:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: 00fb76526efd7da9bb002d3e9be5eed2
-      size: 28175
+      md5: 32a75294e78e2781ac022edf8fdc4a41
+      size: 27748
   preprocess:
     cmd: uv run python src/data/process_spin_data.py
     deps:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: 00fb76526efd7da9bb002d3e9be5eed2
-      size: 28175
+      md5: 32a75294e78e2781ac022edf8fdc4a41
+      size: 27748
     - path: src/data/process_spin_data.py
       hash: md5
       md5: b2f5bbc7056ffac04c8e610cabad52a4
