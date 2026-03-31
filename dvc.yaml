@@ -20,3 +20,28 @@ stages:
     outs:
       - data/preprocessed/nesrece_v_cestnem_prometu.csv:
           cache: false
+
+  fetch_vreme:
+      cmd: uv run python src/data/fetch_obcina_vreme.py
+      deps:
+        - src/data/fetch_obcina_vreme.py
+      params:
+        - fetch_vreme.days_back
+        - fetch_vreme.request_sleep
+        - fetch_vreme.obcine_path
+      outs:
+        - data/raw/obcina_vreme.csv:
+            cache: false
+            always_changed: true
+
+  preprocess_vreme:
+      cmd: uv run python src/data/process_obcina_vreme.py
+      deps:
+        - src/data/process_obcina_vreme.py
+        - data/raw/obcina_vreme.csv
+      params:
+        - preprocess_vreme.raw_path
+        - preprocess_vreme.processed_path
+      outs:
+        - data/preprocessed/obcina_vreme_processed.csv:
+            cache: false

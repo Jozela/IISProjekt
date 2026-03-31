@@ -4,10 +4,12 @@ import pandas as pd
 # =========================
 # CONFIG
 # =========================
+params = yaml.safe_load(open("params.yaml"))["preprocess_vreme"]
 
-RAW_PATH = "data/raw/obcina_vreme.csv"
-PROCESSED_DIR = "data/preprocessed"
-PROCESSED_PATH = os.path.join(PROCESSED_DIR, "obcina_vreme_processed.csv")
+RAW_PATH = params["raw_path"]
+PROCESSED_PATH = params["processed_path"]
+
+PROCESSED_DIR = os.path.dirname(PROCESSED_PATH)
 
 # =========================
 # CREATE FOLDER IF MISSING

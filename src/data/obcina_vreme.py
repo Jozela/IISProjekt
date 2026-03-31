@@ -4,19 +4,22 @@ import requests
 import pandas as pd
 import geopandas as gpd
 from datetime import date, timedelta
-
+import yaml
 # =========================================================
 # CONFIG
 # =========================================================
+params = yaml.safe_load(open("params.yaml"))["fetch_vreme"]
 
-OBCINE_PATH = "obcine.json"
+OBCINE_PATH = params["obcine_path"]
+REQUEST_SLEEP = params["request_sleep"]
+DAYS_BACK = params["days_back"]
 OUTPUT_PATH = "data/raw/obcina_vreme.csv"
 
 # Change this if your municipality name column is different
 OBCINA_NAME_COLUMN = "name"
 
 # Open-Meteo archive API
-BASE_URL = "https://archive-api.open-meteo.com/v1/archive"
+BASE_URL = params["url"]
 
 # Last 2 days
 TODAY = date.today()
@@ -136,7 +139,7 @@ def fetch_weather_for_point(lat, lon, start_date, end_date):
 # =========================================================
 
 def main():
-    os.makedirs("output", exist_ok=True)
+    os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
 
     print("Loading občine GeoJSON...")
     obcine = gpd.read_file(OBCINE_PATH)

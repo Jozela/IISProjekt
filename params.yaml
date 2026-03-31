@@ -2,5 +2,16 @@
 fetch:
   url: "https://spin3.sos112.si/javno/assets/data/lokacija.json"
 
+
+fetch_vreme:
+  days_back: 2
+  request_sleep: 0.2
+  obcine_path: "data/raw/obcine.json"
+  url: "https://archive-api.open-meteo.com/v1/archive"
+
 preprocess:
   station: "all"
+
+preprocess_vreme:
+  raw_path: "data/raw/obcina_vreme.csv"
+  processed_path: "data/preprocessed/obcina_vreme_processed.csv"
