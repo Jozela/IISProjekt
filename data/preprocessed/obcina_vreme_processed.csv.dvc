@@ -1,0 +1,5 @@
+outs:
+- md5: d46b17473a6e1369b79a07030b4c8520
+  size: 31739
+  hash: md5
+  path: obcina_vreme_processed.csv
