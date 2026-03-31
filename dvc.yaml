@@ -29,10 +29,11 @@ stages:
         - fetch_vreme.days_back
         - fetch_vreme.request_sleep
         - fetch_vreme.obcine_path
+        - fetch_vreme.url
+      always_changed: true
       outs:
         - data/raw/obcina_vreme.csv:
             cache: false
-            always_changed: true
 
   preprocess_vreme:
       cmd: uv run python src/data/process_obcina_vreme.py
