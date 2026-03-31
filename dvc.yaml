@@ -22,9 +22,9 @@ stages:
           cache: false
 
   fetch_vreme:
-      cmd: uv run python src/data/fetch_obcina_vreme.py
+      cmd: uv run python src/data/obcina_vreme.py
       deps:
-        - src/data/fetch_obcina_vreme.py
+        - src/data/obcina_vreme.py
       params:
         - fetch_vreme.days_back
         - fetch_vreme.request_sleep
