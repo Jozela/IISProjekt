@@ -13,15 +13,15 @@ stages:
     outs:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: 32a75294e78e2781ac022edf8fdc4a41
-      size: 27748
+      md5: 20bfad3b962cae1ce690813182ff311f
+      size: 30605
   preprocess:
     cmd: uv run python src/data/process_spin_data.py
     deps:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: 32a75294e78e2781ac022edf8fdc4a41
-      size: 27748
+      md5: 20bfad3b962cae1ce690813182ff311f
+      size: 30605
     - path: src/data/process_spin_data.py
       hash: md5
       md5: b2f5bbc7056ffac04c8e610cabad52a4
@@ -34,3 +34,42 @@ stages:
       hash: md5
       md5: 7a810650361bd2d45c90f97f3b666716
       size: 526
+  fetch_vreme:
+    cmd: uv run python src/data/obcina_vreme.py
+    deps:
+    - path: src/data/obcina_vreme.py
+      hash: md5
+      md5: 7d1a241d29a93818b8358113a2bdfd40
+      size: 6676
+    params:
+      params.yaml:
+        fetch_vreme.days_back: 2
+        fetch_vreme.obcine_path: data/raw/obcine.json
+        fetch_vreme.request_sleep: 0.2
+        fetch_vreme.url: https://archive-api.open-meteo.com/v1/archive
+    outs:
+    - path: data/raw/obcina_vreme.csv
+      hash: md5
+      md5: cd9dce911b24dc4e3d3ffb679a601096
+      size: 36765
+  preprocess_vreme:
+    cmd: uv run python src/data/process_obcina_vreme.py
+    deps:
+    - path: data/raw/obcina_vreme.csv
+      hash: md5
+      md5: cd9dce911b24dc4e3d3ffb679a601096
+      size: 36765
+    - path: src/data/process_obcina_vreme.py
+      hash: md5
+      md5: 52a5e40fb1f5778a66e873cb2041dab1
+      size: 1308
+    params:
+      params.yaml:
+        preprocess_vreme.processed_path: 
+          data/preprocessed/obcina_vreme_processed.csv
+        preprocess_vreme.raw_path: data/raw/obcina_vreme.csv
+    outs:
+    - path: data/preprocessed/obcina_vreme_processed.csv
+      hash: md5
+      md5: d46b17473a6e1369b79a07030b4c8520
+      size: 31739
