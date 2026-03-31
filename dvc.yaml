@@ -19,4 +19,4 @@ stages:
       - preprocess.station
     outs:
       - data/preprocessed/nesrece_v_cestnem_prometu.csv:
-          cache: true
+          cache: false
