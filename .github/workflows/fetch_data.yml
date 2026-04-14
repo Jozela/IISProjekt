@@ -1,8 +1,10 @@
 name: Fetch data on schedule
+
 on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
+
 jobs:
   fetch_air:
     name: Fetch and pre-process air data
@@ -26,6 +28,7 @@ jobs:
         run: |
           dvc remote modify origin --local access_key_id ${{ secrets.DAGSHUB_ACCESS_KEY_ID }}
           dvc remote modify origin --local secret_access_key ${{ secrets.DAGSHUB_SECRET_ACCESS_KEY }}
+          dvc remote modify origin --local endpointurl https://dagshub.com
 
       - name: Pull existing data
         run: |
@@ -34,7 +37,7 @@ jobs:
 
       - name: Run DVC pipeline
         run: |
-          dvc repro
+          dvc repro --force
           dvc push
 
       - name: Commit DVC changes
