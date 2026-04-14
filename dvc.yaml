@@ -7,7 +7,6 @@ stages:
       - fetch.url
     outs:
       - data/raw/lokacija.json:
-          cache: false
     always_changed: true
 
   preprocess:
@@ -19,7 +18,6 @@ stages:
       - preprocess.station
     outs:
       - data/preprocessed/nesrece_v_cestnem_prometu.csv:
-          cache: false
 
   fetch_vreme:
       cmd: uv run python src/data/obcina_vreme.py
@@ -33,7 +31,6 @@ stages:
       always_changed: true
       outs:
         - data/raw/obcina_vreme.csv:
-            cache: false
 
   preprocess_vreme:
       cmd: uv run python src/data/process_obcina_vreme.py
@@ -45,4 +42,3 @@ stages:
         - preprocess_vreme.processed_path
       outs:
         - data/preprocessed/obcina_vreme_processed.csv:
-            cache: false
