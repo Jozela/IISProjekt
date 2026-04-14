@@ -5,10 +5,9 @@ stages:
       - src/data/fetch_spin_data.py
     params:
       - fetch.url
-    outs:
-      - data/raw/lokacija.json:
     always_changed: true
-
+    outs:
+      - data/raw/lokacija.json
   preprocess:
     cmd: uv run python src/data/process_spin_data.py
     deps:
@@ -17,28 +16,26 @@ stages:
     params:
       - preprocess.station
     outs:
-      - data/preprocessed/nesrece_v_cestnem_prometu.csv:
-
+      - data/preprocessed/nesrece_v_cestnem_prometu.csv
   fetch_vreme:
-      cmd: uv run python src/data/obcina_vreme.py
-      deps:
-        - src/data/obcina_vreme.py
-      params:
-        - fetch_vreme.days_back
-        - fetch_vreme.request_sleep
-        - fetch_vreme.obcine_path
-        - fetch_vreme.url
-      always_changed: true
-      outs:
-        - data/raw/obcina_vreme.csv:
-
+    cmd: uv run python src/data/obcina_vreme.py
+    deps:
+      - src/data/obcina_vreme.py
+    params:
+      - fetch_vreme.days_back
+      - fetch_vreme.request_sleep
+      - fetch_vreme.obcine_path
+      - fetch_vreme.url
+    always_changed: true
+    outs:
+      - data/raw/obcina_vreme.csv
   preprocess_vreme:
-      cmd: uv run python src/data/process_obcina_vreme.py
-      deps:
-        - src/data/process_obcina_vreme.py
-        - data/raw/obcina_vreme.csv
-      params:
-        - preprocess_vreme.raw_path
-        - preprocess_vreme.processed_path
-      outs:
-        - data/preprocessed/obcina_vreme_processed.csv:
+    cmd: uv run python src/data/process_obcina_vreme.py
+    deps:
+      - src/data/process_obcina_vreme.py
+      - data/raw/obcina_vreme.csv
+    params:
+      - preprocess_vreme.raw_path
+      - preprocess_vreme.processed_path
+    outs:
+      - data/preprocessed/obcina_vreme_processed.csv
