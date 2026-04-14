@@ -30,6 +30,11 @@ jobs:
           dvc remote modify origin --local secret_access_key ${{ secrets.DAGSHUB_SECRET_ACCESS_KEY }}
           dvc remote modify origin --local endpointurl https://dagshub.com
 
+      - name: Run DVC pipeline
+        run: |
+          dvc repro --force
+          dvc push
+
       - name: Pull existing data
         run: |
           dvc pull data/preprocessed/nesrece_v_cestnem_prometu.csv
