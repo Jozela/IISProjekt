@@ -28,7 +28,8 @@ jobs:
         run: |
           dvc remote modify origin --local access_key_id ${{ secrets.DAGSHUB_ACCESS_KEY_ID }}
           dvc remote modify origin --local secret_access_key ${{ secrets.DAGSHUB_SECRET_ACCESS_KEY }}
-          dvc remote modify origin --local endpointurl https://dagshub.com
+          dvc remote modify origin --local endpointurl https://dagshub.com/Jozela/IISProjekt.s3
+          dvc remote modify origin --local use_ssl true
 
 
       - name: Pull existing data
