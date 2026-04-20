@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import os
 import yaml
-import pandas as pd
+import pandas as pd 
 # =========================
 # CONFIG
 # =========================
@@ -31,9 +31,10 @@ for col in ["lat", "lon"]:
 # =========================
 # APPEND TO PROCESSED FILE
 # =========================
-if os.path.exists(PROCESSED_PATH):
-    processed_df = pd.read_csv(PROCESSED_PATH)
-    combined_df = pd.concat([processed_df, raw_df], ignore_index=True)
+backup_file = "/tmp/vreme_backup.csv"
+if os.path.exists(backup_file):
+    existing_df = pd.read_csv(backup_file)
+    combined_df = pd.concat([existing_df, raw_df], ignore_index=True)
 else:
     combined_df = raw_df
 

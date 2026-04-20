@@ -24,9 +24,9 @@ for d in events:
 
 new_df = pd.DataFrame(new_rows)
 
-# Če CSV že obstaja → primerjaj
-if os.path.exists(csv_file):
-    existing_df = pd.read_csv(csv_file)
+backup_file = "/tmp/nesrece_backup.csv"
+if os.path.exists(backup_file):
+    existing_df = pd.read_csv(backup_file)
 
     # združi in odstrani duplikate
     combined_df = pd.concat([existing_df, new_df], ignore_index=True)

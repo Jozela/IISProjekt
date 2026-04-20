@@ -1,10 +1,8 @@
 name: Fetch data on schedule
-
 on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
-
 jobs:
   fetch_air:
     name: Fetch and pre-process air data
@@ -31,11 +29,12 @@ jobs:
           dvc remote modify origin --local endpointurl https://dagshub.com/Jozela/IISProjekt.s3
           dvc remote modify origin --local use_ssl true
 
-
       - name: Pull existing data
         run: |
           dvc pull data/preprocessed/nesrece_v_cestnem_prometu.csv
           dvc pull data/preprocessed/obcina_vreme_processed.csv
+          cp data/preprocessed/nesrece_v_cestnem_prometu.csv /tmp/nesrece_backup.csv || true
+          cp data/preprocessed/obcina_vreme_processed.csv /tmp/vreme_backup.csv || true
 
       - name: Run DVC pipeline
         run: |
