@@ -13,15 +13,15 @@ stages:
     outs:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: ee6d53e78bb0ebb44f0b399ec41618a2
-      size: 37298
+      md5: 418e3352b0260316654ba275cbc6dbf5
+      size: 35791
   preprocess:
     cmd: uv run python src/data/process_spin_data.py
     deps:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: ee6d53e78bb0ebb44f0b399ec41618a2
-      size: 37298
+      md5: 418e3352b0260316654ba275cbc6dbf5
+      size: 35791
     - path: src/data/process_spin_data.py
       hash: md5
       md5: 35b0258b72287b9fd266a4b9cc9f19fe
@@ -32,8 +32,8 @@ stages:
     outs:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 39cea715843b9755173e1f9bc89b3732
-      size: 2387
+      md5: 7268bdc4fcbd91dbef615957fb27d7fd
+      size: 3179
   fetch_vreme:
     cmd: uv run python src/data/obcina_vreme.py
     deps:
@@ -50,15 +50,15 @@ stages:
     outs:
     - path: data/raw/obcina_vreme.csv
       hash: md5
-      md5: bd57dba54b7ab5d8798ad465e813c29f
-      size: 35851
+      md5: 1da06fce43d801b48737835c140ca9cc
+      size: 34016
   preprocess_vreme:
     cmd: uv run python src/data/process_obcina_vreme.py
     deps:
     - path: data/raw/obcina_vreme.csv
       hash: md5
-      md5: bd57dba54b7ab5d8798ad465e813c29f
-      size: 35851
+      md5: 1da06fce43d801b48737835c140ca9cc
+      size: 34016
     - path: src/data/process_obcina_vreme.py
       hash: md5
       md5: 5b8ef2df0c8dde020b862116514b4ba8
@@ -71,5 +71,5 @@ stages:
     outs:
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: 17616da65192ed9011e200dcdefd5ebc
-      size: 125955
+      md5: c9505fe8483a310b8b8cc4cdab73d9ed
+      size: 156509
