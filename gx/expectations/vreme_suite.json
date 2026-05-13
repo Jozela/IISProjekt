@@ -1,0 +1,251 @@
+{
+  "data_asset_type": null,
+  "expectation_suite_name": "vreme_suite",
+  "expectations": [
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "date"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "obcina"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "avg_temp_c"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "min_temp_c"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "max_temp_c"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "weather_label"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_table_columns_to_match_ordered_list",
+      "kwargs": {
+        "column_list": [
+          "date",
+          "obcina",
+          "avg_temp_c",
+          "min_temp_c",
+          "max_temp_c",
+          "precip_mm",
+          "snowfall_cm",
+          "cloud_cover_pct",
+          "visibility_m",
+          "sunshine_duration_sec",
+          "sunny",
+          "rainy",
+          "snowy",
+          "icy",
+          "frost",
+          "fog",
+          "weather_label"
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_table_row_count_to_be_between",
+      "kwargs": {
+        "min_value": 1
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "date",
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "avg_temp_c",
+        "max_value": 50,
+        "min_value": -30
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "min_temp_c",
+        "max_value": 50,
+        "min_value": -30
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "max_temp_c",
+        "max_value": 50,
+        "min_value": -30
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_pair_values_a_to_be_greater_than_b",
+      "kwargs": {
+        "column_A": "avg_temp_c",
+        "column_B": "min_temp_c",
+        "or_equal": true
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_pair_values_a_to_be_greater_than_b",
+      "kwargs": {
+        "column_A": "max_temp_c",
+        "column_B": "avg_temp_c",
+        "or_equal": true
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "precip_mm",
+        "min_value": 0
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "snowfall_cm",
+        "min_value": 0
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "cloud_cover_pct",
+        "max_value": 100,
+        "min_value": 0
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "sunny",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "rainy",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "snowy",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "icy",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "frost",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "fog",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "weather_label",
+        "value_set": [
+          "sunny",
+          "rainy",
+          "snowy",
+          "icy",
+          "frost",
+          "fog"
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "obcina",
+        "type_": "str"
+      },
+      "meta": {}
+    }
+  ],
+  "ge_cloud_id": null,
+  "meta": {
+    "great_expectations_version": "0.18.21"
+  }
+}

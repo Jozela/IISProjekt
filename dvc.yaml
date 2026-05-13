@@ -39,3 +39,21 @@ stages:
       - preprocess_vreme.processed_path
     outs:
       - data/preprocessed/obcina_vreme_processed.csv
+
+  validate_nesrece:
+  cmd: |
+    cd gx && uv run python run_checkpoint.py
+  deps:
+    - data/preprocessed/nesrece_v_cestnem_prometu.csv
+  outs:
+    - gx:
+        persist: true
+
+validate_vreme:
+  cmd: |
+    cd gx && uv run python run_checkpoint_vreme.py
+  deps:
+    - data/preprocessed/obcina_vreme_processed.csv
+  outs:
+    - gx:
+        persist: true
