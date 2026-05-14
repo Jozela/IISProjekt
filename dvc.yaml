@@ -48,15 +48,15 @@ stages:
       cd gx && uv run python run_checkpoint.py
     deps:
       - data/preprocessed/nesrece_v_cestnem_prometu.csv
-    outs:
-      - gx:
-          persist: true
+      - gx/run_checkpoint.py
+      - gx/checkpoints/nesrece_checkpoint.yml
+      - gx/expectations/nesrece_suite.json
 
   validate_vreme:
     cmd: |
       cd gx && uv run python run_checkpoint_vreme.py
     deps:
       - data/preprocessed/obcina_vreme_processed.csv
-    outs:
-      - gx:
-          persist: true
+      - gx/run_checkpoint_vreme.py
+      - gx/checkpoints/vreme_checkpoint.yml
+      - gx/expectations/vreme_suite.json
