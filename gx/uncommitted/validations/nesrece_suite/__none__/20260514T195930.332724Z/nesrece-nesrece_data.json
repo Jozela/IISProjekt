@@ -1,0 +1,254 @@
+{
+  "evaluation_parameters": {},
+  "meta": {
+    "active_batch_definition": {
+      "batch_identifiers": {
+        "path": "preprocessed/nesrece_v_cestnem_prometu.csv"
+      },
+      "data_asset_name": "nesrece_data",
+      "data_connector_name": "fluent",
+      "datasource_name": "nesrece"
+    },
+    "batch_markers": {
+      "ge_load_time": "20260514T195930.335255Z",
+      "pandas_data_fingerprint": "7486e3e42c79dcfc1d8ed8c43a55c9d6"
+    },
+    "batch_spec": {
+      "path": "/Users/jozelavric/Desktop/Sola/ISS/ISSProjekt/data/preprocessed/nesrece_v_cestnem_prometu.csv",
+      "reader_method": "read_csv",
+      "reader_options": {}
+    },
+    "checkpoint_id": null,
+    "checkpoint_name": "nesrece_checkpoint",
+    "expectation_suite_name": "nesrece_suite",
+    "great_expectations_version": "0.18.21",
+    "run_id": {
+      "run_name": null,
+      "run_time": "2026-05-14T21:59:30.332724+02:00"
+    },
+    "validation_id": null,
+    "validation_time": "20260514T195930.343953Z"
+  },
+  "results": [
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "nesrece-nesrece_data",
+          "column": "prijavaCas"
+        },
+        "meta": {}
+      },
+      "meta": {},
+      "result": {
+        "element_count": 131,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_match_regex",
+        "kwargs": {
+          "batch_id": "nesrece-nesrece_data",
+          "column": "prijavaCas",
+          "regex": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}"
+        },
+        "meta": {}
+      },
+      "meta": {},
+      "result": {
+        "element_count": 131,
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "unexpected_percent_total": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "nesrece-nesrece_data",
+          "column": "obcinaNaziv"
+        },
+        "meta": {}
+      },
+      "meta": {},
+      "result": {
+        "element_count": 131,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_be_of_type",
+        "kwargs": {
+          "batch_id": "nesrece-nesrece_data",
+          "column": "obcinaNaziv",
+          "type_": "str"
+        },
+        "meta": {}
+      },
+      "meta": {},
+      "result": {
+        "element_count": 131,
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "unexpected_percent_total": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "nesrece-nesrece_data",
+          "column": "nastanekCas"
+        },
+        "meta": {}
+      },
+      "meta": {},
+      "result": {
+        "element_count": 131,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_match_regex",
+        "kwargs": {
+          "batch_id": "nesrece-nesrece_data",
+          "column": "nastanekCas",
+          "regex": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}"
+        },
+        "meta": {}
+      },
+      "meta": {},
+      "result": {
+        "element_count": 131,
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "unexpected_percent_total": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_table_columns_to_match_ordered_list",
+        "kwargs": {
+          "batch_id": "nesrece-nesrece_data",
+          "column_list": [
+            "prijavaCas",
+            "obcinaNaziv",
+            "nastanekCas"
+          ]
+        },
+        "meta": {}
+      },
+      "meta": {},
+      "result": {
+        "observed_value": [
+          "prijavaCas",
+          "obcinaNaziv",
+          "nastanekCas"
+        ]
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_table_row_count_to_be_between",
+        "kwargs": {
+          "batch_id": "nesrece-nesrece_data",
+          "min_value": 1
+        },
+        "meta": {}
+      },
+      "meta": {},
+      "result": {
+        "observed_value": 131
+      },
+      "success": true
+    }
+  ],
+  "statistics": {
+    "evaluated_expectations": 8,
+    "success_percent": 100.0,
+    "successful_expectations": 8,
+    "unsuccessful_expectations": 0
+  },
+  "success": true
+}
