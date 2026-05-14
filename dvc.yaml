@@ -8,6 +8,7 @@ stages:
     always_changed: true
     outs:
       - data/raw/lokacija.json
+
   preprocess:
     cmd: uv run python src/data/process_spin_data.py
     deps:
@@ -17,6 +18,7 @@ stages:
       - preprocess.station
     outs:
       - data/preprocessed/nesrece_v_cestnem_prometu.csv
+
   fetch_vreme:
     cmd: uv run python src/data/obcina_vreme.py
     deps:
@@ -29,6 +31,7 @@ stages:
     always_changed: true
     outs:
       - data/raw/obcina_vreme.csv
+
   preprocess_vreme:
     cmd: uv run python src/data/process_obcina_vreme.py
     deps:
@@ -41,19 +44,19 @@ stages:
       - data/preprocessed/obcina_vreme_processed.csv
 
   validate_nesrece:
-  cmd: |
-    cd gx && uv run python run_checkpoint.py
-  deps:
-    - data/preprocessed/nesrece_v_cestnem_prometu.csv
-  outs:
-    - gx:
-        persist: true
+    cmd: |
+      cd gx && uv run python run_checkpoint.py
+    deps:
+      - data/preprocessed/nesrece_v_cestnem_prometu.csv
+    outs:
+      - gx:
+          persist: true
 
-validate_vreme:
-  cmd: |
-    cd gx && uv run python run_checkpoint_vreme.py
-  deps:
-    - data/preprocessed/obcina_vreme_processed.csv
-  outs:
-    - gx:
-        persist: true
+  validate_vreme:
+    cmd: |
+      cd gx && uv run python run_checkpoint_vreme.py
+    deps:
+      - data/preprocessed/obcina_vreme_processed.csv
+    outs:
+      - gx:
+          persist: true
