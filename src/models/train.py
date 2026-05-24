@@ -38,7 +38,7 @@ THRESHOLD    = params.get("threshold", 0.3)
 # ── DagsHub + MLflow init ─────────────────────────────────────────────────────
 dagshub.init(
     repo_owner="Jozela",
-    repo_name="IISVaje",
+    repo_name="IIProjekt",
     mlflow=True,
 )
 mlflow.set_experiment("nesrece_accident_prediction")
