@@ -1,4 +1,5 @@
-fetch:
+stages:
+  fetch:
     cmd: uv run python src/data/fetch_spin_data.py
     deps:
       - src/data/fetch_spin_data.py
