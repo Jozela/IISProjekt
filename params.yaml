@@ -15,3 +15,11 @@ preprocess:
 preprocess_vreme:
   raw_path: "data/raw/obcina_vreme.csv"
   processed_path: "data/preprocessed/obcina_vreme_processed.csv"
+
+train_nesrece:
+  nesrece_path: data/preprocessed/nesrece_v_cestnem_prometu.csv
+  vreme_path:   data/preprocessed/obcina_vreme_processed.csv
+  test_size:    2000
+  window_size:  24
+  random_state: 42
+  threshold:    0.3
