@@ -13,15 +13,15 @@ stages:
     outs:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: 9f2bb52e7d1fa043233b7123e6f821de
-      size: 51639
+      md5: 20f125677992125d375f06d0cbd50948
+      size: 53160
   preprocess:
     cmd: uv run python src/data/process_spin_data.py
     deps:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: 9f2bb52e7d1fa043233b7123e6f821de
-      size: 51639
+      md5: 20f125677992125d375f06d0cbd50948
+      size: 53160
     - path: src/data/process_spin_data.py
       hash: md5
       md5: 35b0258b72287b9fd266a4b9cc9f19fe
@@ -129,5 +129,50 @@ stages:
       size: 12168
     - path: reports/nesrece_data_testing_report.html
       hash: md5
-      md5: 3ee119a302e25c0a1c66ca2c9b168927
+      md5: ff97c14c66852f9a9ce7d83ae2507dc9
       size: 3939415
+  train_nesrece:
+    cmd: "uv run python src/models/train.py\ngit commit -am \"Updated nesrece model
+      on $(date)\" || true\ngit push || true\ndvc push || true\n"
+    deps:
+    - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
+      hash: md5
+      md5: c12ec4094cd090bd9d6ec8ba0e95a20e
+      size: 12171
+    - path: data/preprocessed/obcina_vreme_processed.csv
+      hash: md5
+      md5: c8da9a44106ca5ae27d96f8f9241a93d
+      size: 472412
+    - path: data/reference/nesrece_v_cestnem_prometu.csv
+      hash: md5
+      md5: 19c912f9a7682320cfa56d402d25fc75
+      size: 12168
+    - path: src/models/preprocess.py
+      hash: md5
+      md5: 1b936e4ab9f0e12b675b400336cf3b0b
+      size: 4584
+    - path: src/models/train.py
+      hash: md5
+      md5: 9a1022de594ca7cfe83a1f14d26eb495
+      size: 11174
+    params:
+      params.yaml:
+        train_nesrece.nesrece_path: 
+          data/preprocessed/nesrece_v_cestnem_prometu.csv
+        train_nesrece.random_state: 42
+        train_nesrece.test_size: 2000
+        train_nesrece.vreme_path: data/preprocessed/obcina_vreme_processed.csv
+        train_nesrece.window_size: 24
+    outs:
+    - path: models/merger_nesrece.pkl
+      hash: md5
+      md5: b54f0fb8deaf2f5db862742586191ef4
+      size: 79
+    - path: models/model_nesrece.keras
+      hash: md5
+      md5: 99a1015ed9462d285f4afa46a08e696a
+      size: 455950
+    - path: models/pipeline_nesrece.pkl
+      hash: md5
+      md5: 29d5270eab845348147d48638d7a229a
+      size: 3834

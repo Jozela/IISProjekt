@@ -19,7 +19,8 @@ preprocess_vreme:
 train_nesrece:
   nesrece_path: data/preprocessed/nesrece_v_cestnem_prometu.csv
   vreme_path:   data/preprocessed/obcina_vreme_processed.csv
-  test_size:    2000
-  window_size:  24
+  test_size:    60        # ~2 months of daily data
+  window_size:  7         # 7-day look-back instead of 24-hour
   random_state: 42
   threshold:    0.3
+  time_freq:    D         # D = daily, was h = hourly

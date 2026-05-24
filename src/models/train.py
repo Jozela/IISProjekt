@@ -34,11 +34,12 @@ TEST_SIZE    = params["test_size"]
 WINDOW_SIZE  = params["window_size"]
 RANDOM_STATE = params["random_state"]
 THRESHOLD    = params.get("threshold", 0.3)
+TIME_FREQ    = params.get("time_freq", "D")
 
 # ── DagsHub + MLflow init ─────────────────────────────────────────────────────
 dagshub.init(
     repo_owner="Jozela",
-    repo_name="IIProjekt",
+    repo_name="IISProjekt",
     mlflow=True,
 )
 mlflow.set_experiment("nesrece_accident_prediction")
@@ -60,11 +61,11 @@ def build_model(input_shape, pos_bias=0.0):
         LSTM(32, return_sequences=False),
         Dropout(0.3),
         Dense(16, activation="relu"),
-        Dense(1,  activation="sigmoid",
+        Dense(1, activation="sigmoid",
               bias_initializer=tf.keras.initializers.Constant(pos_bias)),
     ])
     model.compile(
-        optimizer="adam",
+        optimizer=tf.keras.optimizers.Adam(learning_rate=0.001, clipnorm=1.0),
         loss="binary_crossentropy",
         metrics=[
             "accuracy",
@@ -95,8 +96,8 @@ def scale_and_window(df_split, scaler, window_size):
 
 
 def log_classification_metrics(y_true, y_prob, prefix):
-    y_pred  = (y_prob >= THRESHOLD).astype(int)
-    report  = classification_report(
+    y_pred = (y_prob >= THRESHOLD).astype(int)
+    report = classification_report(
         y_true, y_pred,
         target_names=["No accident", "Accident"],
         zero_division=0,
@@ -123,15 +124,13 @@ def log_classification_metrics(y_true, y_prob, prefix):
     print("Confusion matrix:")
     print(confusion_matrix(y_true, y_pred))
 
-    return y_pred
-
 
 # ── Feature columns ───────────────────────────────────────────────────────────
 NUMERIC_FEATURES = [
     "avg_temp_c", "min_temp_c", "max_temp_c",
     "precip_mm", "snowfall_cm", "cloud_cover_pct",
     "sunshine_duration_sec",
-    "hour_of_day", "day_of_week", "month", "is_weekend",
+    "day_of_week", "month", "is_weekend",
     "obcina_enc",
 ]
 BINARY_FEATURES = ["sunny", "rainy", "snowy", "icy", "frost", "fog"]
@@ -143,7 +142,7 @@ print("Loading and merging data...")
 nesrece_df = pd.read_csv(NESRECE_PATH)
 vreme_df   = pd.read_csv(VREME_PATH)
 
-merger = NesreceWeatherPreprocessor(time_freq="h")
+merger = NesreceWeatherPreprocessor(time_freq=TIME_FREQ)
 df     = merger.fit_transform((nesrece_df, vreme_df))
 
 print(f"Grid shape: {df.shape}")
@@ -191,15 +190,16 @@ print(f"Positive class weight: {class_weight[1]:.1f}x  (raw ratio {raw_ratio:.0f
 # ── MLflow run ────────────────────────────────────────────────────────────────
 with mlflow.start_run(run_name="train_nesrece"):
 
-    mlflow.log_param("nesrece_path",         NESRECE_PATH)
-    mlflow.log_param("vreme_path",           VREME_PATH)
-    mlflow.log_param("test_size",            TEST_SIZE)
-    mlflow.log_param("window_size",          WINDOW_SIZE)
-    mlflow.log_param("random_state",         RANDOM_STATE)
-    mlflow.log_param("threshold",            THRESHOLD)
-    mlflow.log_param("class_weight_pos",     round(class_weight[1], 2))
-    mlflow.log_param("train_accident_rate",  round(float(y_train.mean()), 4))
-    mlflow.log_param("n_features",           len(ALL_FEATURES))
+    mlflow.log_param("nesrece_path",        NESRECE_PATH)
+    mlflow.log_param("vreme_path",          VREME_PATH)
+    mlflow.log_param("test_size",           TEST_SIZE)
+    mlflow.log_param("window_size",         WINDOW_SIZE)
+    mlflow.log_param("random_state",        RANDOM_STATE)
+    mlflow.log_param("threshold",           THRESHOLD)
+    mlflow.log_param("time_freq",           TIME_FREQ)
+    mlflow.log_param("class_weight_pos",    round(class_weight[1], 2))
+    mlflow.log_param("train_accident_rate", round(float(y_train.mean()), 4))
+    mlflow.log_param("n_features",          len(ALL_FEATURES))
 
     mlflow.tensorflow.autolog()
 
@@ -249,7 +249,6 @@ with mlflow.start_run(run_name="train_nesrece"):
     model_path = "models/model_nesrece.keras"
     model_full.save(model_path)
     mlflow.log_artifact(model_path)
-    print(f"Model saved: {model_path}")
 
     # ── Save ONNX ─────────────────────────────────────────────────────────────
     onnx_path = "models/model_nesrece.onnx"
@@ -270,5 +269,6 @@ with mlflow.start_run(run_name="train_nesrece"):
     mlflow.log_artifact(pipeline_path)
     mlflow.log_artifact(merger_path)
 
+    print(f"Model saved: {model_path}")
     print(f"Pipeline saved: {pipeline_path}")
-    print(f"Merger saved:   {merger_path}")
+    print(f"Merger saved: {merger_path}")
