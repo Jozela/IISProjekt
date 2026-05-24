@@ -13,15 +13,15 @@ stages:
     outs:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: 164e06a0a042af9c3b6ced9084274675
-      size: 51361
+      md5: dd273474992c8030ccf3c0408493c10b
+      size: 51655
   preprocess:
     cmd: uv run python src/data/process_spin_data.py
     deps:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: 164e06a0a042af9c3b6ced9084274675
-      size: 51361
+      md5: dd273474992c8030ccf3c0408493c10b
+      size: 51655
     - path: src/data/process_spin_data.py
       hash: md5
       md5: 35b0258b72287b9fd266a4b9cc9f19fe
@@ -111,3 +111,23 @@ stages:
       hash: md5
       md5: 71ee3883a07653823b77b77ace683883
       size: 536
+  test_nesrece_data:
+    cmd: uv run python src/data/test_nesrece_data.py
+    deps:
+    - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
+      hash: md5
+      md5: c12ec4094cd090bd9d6ec8ba0e95a20e
+      size: 12171
+    - path: src/data/test_nesrece_data.py
+      hash: md5
+      md5: a53f0b9f4b4f4ece80f1f2739d093aa2
+      size: 2294
+    outs:
+    - path: data/reference/nesrece_v_cestnem_prometu.csv
+      hash: md5
+      md5: 19c912f9a7682320cfa56d402d25fc75
+      size: 12168
+    - path: reports/nesrece_data_testing_report.html
+      hash: md5
+      md5: 3ee119a302e25c0a1c66ca2c9b168927
+      size: 3939415
