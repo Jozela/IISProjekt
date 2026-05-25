@@ -30,7 +30,7 @@ for df in [current, reference]:
         df["prijavaCas"] - df["nastanekCas"]
     ).dt.total_seconds()
 
-cols_to_drop = ["prijavaCas", "nastanekCas"]
+cols_to_drop = ["prijavaCas", "nastanekCas", "obcinaNaziv"]
 ref_analysis = reference.drop(columns=cols_to_drop)
 cur_analysis = current.drop(columns=cols_to_drop)
 

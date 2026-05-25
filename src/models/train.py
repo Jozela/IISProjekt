@@ -5,6 +5,7 @@ import random
 import yaml
 import subprocess
 import sys
+import json
 
 import numpy as np
 import mlflow
@@ -12,6 +13,7 @@ import mlflow.tensorflow
 import dagshub
 import pandas as pd
 import tensorflow as tf
+import shap
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.metrics import (
@@ -152,7 +154,7 @@ if df[LABEL_COL].isna().all():
     print("[ERROR] No labels found in merged data. Exiting.")
     sys.exit(1)
 
-df_model = df[ALL_FEATURES + [LABEL_COL]].copy()
+df_model = df[ALL_FEATURES + [LABEL_COL, "obcinaNaziv"]].copy()
 
 effective_test_size = max(TEST_SIZE, WINDOW_SIZE + 1)
 if len(df_model) <= effective_test_size:
@@ -272,3 +274,57 @@ with mlflow.start_run(run_name="train_nesrece"):
     print(f"Model saved: {model_path}")
     print(f"Pipeline saved: {pipeline_path}")
     print(f"Merger saved: {merger_path}")
+
+    # ── SHAP explainability ───────────────────────────────────────────────────
+    print("Computing SHAP values...")
+
+    background_idx  = np.random.choice(len(X_full), size=min(200, len(X_full)), replace=False)
+    background      = X_full[background_idx]
+
+    explainer       = shap.GradientExplainer(model_full, background)
+    shap_sample_idx = np.random.choice(len(X_full), size=min(500, len(X_full)), replace=False)
+    shap_sample     = X_full[shap_sample_idx]
+    shap_values_raw = explainer.shap_values(shap_sample)
+
+    shap_values_arr = np.array(shap_values_raw)
+
+    # Remove trailing output dimension: (500, 7, 18, 1) → (500, 7, 18)
+    if shap_values_arr.ndim == 4:
+        shap_values_arr = shap_values_arr[..., 0]
+
+    # Last column is the label that was appended — drop it
+    shap_values_arr = shap_values_arr[:, :, :len(ALL_FEATURES)]
+
+    # Average absolute SHAP over time window → (n_samples, n_features)
+    shap_mean = np.abs(shap_values_arr).mean(axis=1)
+
+    feature_importance = pd.DataFrame({
+        "feature":    ALL_FEATURES,
+        "importance": shap_mean.mean(axis=0),
+    }).sort_values("importance", ascending=False)
+    print(feature_importance.to_string(index=False))
+
+    shap_path = "models/shap_values.npz"
+    np.savez(shap_path,
+        shap_values=shap_mean,
+        feature_names=np.array(ALL_FEATURES),
+    )
+    mlflow.log_artifact(shap_path)
+
+    shap_sample_df = df_model.iloc[shap_sample_idx].reset_index(drop=True)
+
+    obcina_shap = {}
+    for obcina in df_model["obcinaNaziv"].unique():
+        mask = shap_sample_df["obcinaNaziv"] == obcina
+        if mask.sum() > 0:
+            obcina_shap[obcina] = shap_mean[mask.values].mean(axis=0).tolist()
+
+    shap_obcina_path = "models/shap_per_obcina.json"
+    with open(shap_obcina_path, "w") as f:
+        json.dump({
+            "feature_names":     ALL_FEATURES,
+            "obcina_shap":       obcina_shap,
+            "global_importance": feature_importance.set_index("feature")["importance"].to_dict(),
+        }, f)
+    mlflow.log_artifact(shap_obcina_path)
+    print(f"SHAP saved: {shap_path}, {shap_obcina_path}")
