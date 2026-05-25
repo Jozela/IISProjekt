@@ -137,42 +137,42 @@ stages:
     deps:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: c12ec4094cd090bd9d6ec8ba0e95a20e
-      size: 12171
+      md5: 9fe5e5a0c68a346f82364cb6a9d62084
+      size: 12222
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: c8da9a44106ca5ae27d96f8f9241a93d
-      size: 472412
+      md5: a82c9d1efbf0dcef63a9c40d83d9c851
+      size: 488336
     - path: data/reference/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 19c912f9a7682320cfa56d402d25fc75
-      size: 12168
+      md5: ed9126a351e16cfee6fe565fc85b9048
+      size: 12219
     - path: src/models/preprocess.py
       hash: md5
-      md5: 1b936e4ab9f0e12b675b400336cf3b0b
-      size: 4584
+      md5: ce94f32b6e5890dfa205c3bae776ce8e
+      size: 2891
     - path: src/models/train.py
       hash: md5
-      md5: 9a1022de594ca7cfe83a1f14d26eb495
-      size: 11174
+      md5: a4c4f707bfe0ada1237a7d1f59a25e41
+      size: 11287
     params:
       params.yaml:
         train_nesrece.nesrece_path: 
           data/preprocessed/nesrece_v_cestnem_prometu.csv
         train_nesrece.random_state: 42
-        train_nesrece.test_size: 2000
+        train_nesrece.test_size: 60
         train_nesrece.vreme_path: data/preprocessed/obcina_vreme_processed.csv
-        train_nesrece.window_size: 24
+        train_nesrece.window_size: 7
     outs:
     - path: models/merger_nesrece.pkl
       hash: md5
-      md5: b54f0fb8deaf2f5db862742586191ef4
+      md5: 5fec91070d142bd97c5f17dda92fbaaa
       size: 79
     - path: models/model_nesrece.keras
       hash: md5
-      md5: 99a1015ed9462d285f4afa46a08e696a
-      size: 455950
+      md5: 5f178915e92fd96a5ce2b21c6af5e671
+      size: 452882
     - path: models/pipeline_nesrece.pkl
       hash: md5
-      md5: 29d5270eab845348147d48638d7a229a
-      size: 3834
+      md5: 4e8980a5abe158645f549189e70c547a
+      size: 3746
