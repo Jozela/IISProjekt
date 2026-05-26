@@ -137,16 +137,16 @@ stages:
     deps:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 9fe5e5a0c68a346f82364cb6a9d62084
-      size: 12222
+      md5: 5ce5a63a6cf0fb56f6989fe1a7806315
+      size: 12747
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: a82c9d1efbf0dcef63a9c40d83d9c851
-      size: 488336
+      md5: d7935dc4e034c6209ef206d7607df0d2
+      size: 504333
     - path: data/reference/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: ed9126a351e16cfee6fe565fc85b9048
-      size: 12219
+      md5: 60de9118e00fc09fe6c3d1a48cadd852
+      size: 12744
     - path: src/models/preprocess.py
       hash: md5
       md5: ce94f32b6e5890dfa205c3bae776ce8e
@@ -170,9 +170,9 @@ stages:
       size: 79
     - path: models/model_nesrece.keras
       hash: md5
-      md5: 5f178915e92fd96a5ce2b21c6af5e671
-      size: 452882
+      md5: de6c3085ab4c82d86a76ec111e299fb0
+      size: 452881
     - path: models/pipeline_nesrece.pkl
       hash: md5
-      md5: 4e8980a5abe158645f549189e70c547a
+      md5: 3f5409bdb38f75a29ccbc02472dd724f
       size: 3746
