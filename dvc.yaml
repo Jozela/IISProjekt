@@ -97,3 +97,16 @@ stages:
           persist: true
       - models/merger_nesrece.pkl:
           persist: true
+
+  predict_nesrece:
+    cmd: uv run python src/models/predict.py
+    deps:
+      - src/models/predict.py
+      - src/models/preprocess.py
+      - models/model_nesrece.keras
+      - models/pipeline_nesrece.pkl
+      - data/preprocessed/nesrece_v_cestnem_prometu.csv
+      - data/preprocessed/obcina_vreme_processed.csv
+    outs:
+      - data/predictions/today.json:
+          persist: true

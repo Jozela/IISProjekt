@@ -13,15 +13,15 @@ stages:
     outs:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: 99fc96491af243f852d3271f13e70d68
-      size: 28319
+      md5: 95c8cd5b93904baf6f472fe90cb55505
+      size: 41843
   preprocess:
     cmd: uv run python src/data/process_spin_data.py
     deps:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: 99fc96491af243f852d3271f13e70d68
-      size: 28319
+      md5: 95c8cd5b93904baf6f472fe90cb55505
+      size: 41843
     - path: src/data/process_spin_data.py
       hash: md5
       md5: 35b0258b72287b9fd266a4b9cc9f19fe
@@ -32,8 +32,8 @@ stages:
     outs:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 36779b231f654ff7c8516fefffb821a6
-      size: 12374
+      md5: e19c433b176f084c015debfb7d5ca4d4
+      size: 13170
   fetch_vreme:
     cmd: uv run python src/data/obcina_vreme.py
     deps:
@@ -50,15 +50,15 @@ stages:
     outs:
     - path: data/raw/obcina_vreme.csv
       hash: md5
-      md5: bb50c946dad699638939e8b6a5e76c8c
-      size: 36236
+      md5: 62ee9e5ac2aa8a9ee8f90fcba915ecf7
+      size: 36263
   preprocess_vreme:
     cmd: uv run python src/data/process_obcina_vreme.py
     deps:
     - path: data/raw/obcina_vreme.csv
       hash: md5
-      md5: bb50c946dad699638939e8b6a5e76c8c
-      size: 36236
+      md5: 62ee9e5ac2aa8a9ee8f90fcba915ecf7
+      size: 36263
     - path: src/data/process_obcina_vreme.py
       hash: md5
       md5: 5b8ef2df0c8dde020b862116514b4ba8
@@ -71,8 +71,8 @@ stages:
     outs:
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: a82c9d1efbf0dcef63a9c40d83d9c851
-      size: 488336
+      md5: d7935dc4e034c6209ef206d7607df0d2
+      size: 504333
   validate_nesrece:
     cmd: "cd gx && uv run python run_checkpoint.py\n"
     deps:
@@ -116,8 +116,8 @@ stages:
     deps:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 36779b231f654ff7c8516fefffb821a6
-      size: 12374
+      md5: e19c433b176f084c015debfb7d5ca4d4
+      size: 13170
     - path: src/data/test_nesrece_data.py
       hash: md5
       md5: 3df4c6879a3323709fa33f3c2e75ba09
@@ -125,36 +125,36 @@ stages:
     outs:
     - path: data/reference/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 291249095c1499910a94b979a0396249
-      size: 12371
+      md5: 55699e09fede3ff563342ebf718b34c8
+      size: 13167
     - path: reports/nesrece_data_testing_report.html
       hash: md5
-      md5: 8074abdd58e2571b2e48596576205687
-      size: 3876347
+      md5: 8cd43c6317073bde7b4dc90d1e248618
+      size: 3876034
   train_nesrece:
     cmd: "uv run python src/models/train.py\ngit commit -am \"Updated nesrece model
       on $(date)\" || true\ngit push || true\ndvc push || true\n"
     deps:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: c12ec4094cd090bd9d6ec8ba0e95a20e
-      size: 12171
+      md5: 36779b231f654ff7c8516fefffb821a6
+      size: 12374
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: c8da9a44106ca5ae27d96f8f9241a93d
-      size: 472412
+      md5: a82c9d1efbf0dcef63a9c40d83d9c851
+      size: 488336
     - path: data/reference/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 19c912f9a7682320cfa56d402d25fc75
-      size: 12168
+      md5: 291249095c1499910a94b979a0396249
+      size: 12371
     - path: src/models/preprocess.py
       hash: md5
       md5: ce94f32b6e5890dfa205c3bae776ce8e
       size: 2891
     - path: src/models/train.py
       hash: md5
-      md5: a4c4f707bfe0ada1237a7d1f59a25e41
-      size: 11287
+      md5: 89ec17067a5ed5c7a388c23d95d679a1
+      size: 13564
     params:
       params.yaml:
         train_nesrece.nesrece_path: 
@@ -170,9 +170,9 @@ stages:
       size: 79
     - path: models/model_nesrece.keras
       hash: md5
-      md5: 1928c1f2209229674afd49903962540c
+      md5: f312cfa8ff4a993fbd1a2cda1f4354e3
       size: 452882
     - path: models/pipeline_nesrece.pkl
       hash: md5
-      md5: 5f6dbb91417363047154d2df401a08c6
+      md5: 107de38477f58468ba9f72fae785a17d
       size: 3746
