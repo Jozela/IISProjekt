@@ -88,13 +88,16 @@ def save_onnx(model, onnx_path):
     ], check=True)
     shutil.rmtree(saved_model_path)
 
-
 def scale_and_window(df_split, scaler, window_size):
-    X_scaled = scaler.transform(df_split[ALL_FEATURES])
+    X_scaled = scaler.transform(df_split[ALL_FEATURES])  # only features, no label
     y_labels = df_split[LABEL_COL].values
-    combined = np.hstack([X_scaled, y_labels.reshape(-1, 1)])
-    X, y     = SlidingWindowTransformer(window_size).fit_transform(combined)
-    return X, y.astype(int)
+    
+    X_list, y_list = [], []
+    for i in range(len(X_scaled) - window_size):
+        X_list.append(X_scaled[i : i + window_size])   # features only
+        y_list.append(y_labels[i + window_size])        # label at next step
+    
+    return np.array(X_list), np.array(y_list).astype(int)
 
 
 def log_classification_metrics(y_true, y_prob, prefix):
