@@ -75,7 +75,7 @@ class NesreceWeatherPreprocessor(BaseEstimator, TransformerMixin):
         grid["month"]       = grid["day_slot"].dt.month
         grid["is_weekend"]  = (grid["day_of_week"] >= 5).astype(int)
         grid["obcina_enc"]  = grid["obcinaNaziv"].astype("category").cat.codes
-
+        grid["hour_of_day"] = grid["day_slot"].dt.hour  # will be 0-23 for hourly, 0 for daily
         grid = grid.sort_values(["obcinaNaziv", "day_slot"]).reset_index(drop=True)
         return grid
 
