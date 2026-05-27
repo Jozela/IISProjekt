@@ -149,12 +149,12 @@ stages:
       size: 13591
     - path: src/models/preprocess.py
       hash: md5
-      md5: ce94f32b6e5890dfa205c3bae776ce8e
-      size: 2891
+      md5: 47697d65230374e069b7f460255b42af
+      size: 3356
     - path: src/models/train.py
       hash: md5
-      md5: 4ec0b1c699f22a6092da51521b2cf773
-      size: 13716
+      md5: a54cd5953f56dbe5c57d4cf11fad5cb3
+      size: 11978
     params:
       params.yaml:
         train_nesrece.nesrece_path: 
@@ -168,14 +168,22 @@ stages:
       hash: md5
       md5: 5fec91070d142bd97c5f17dda92fbaaa
       size: 79
-    - path: models/model_nesrece.keras
+    - path: models/model_nesrece.pkl
       hash: md5
-      md5: 8041c6b2b713c4a7514f40bf101dcc47
-      size: 449809
+      md5: 2d380806611bcfc57ef3594372cdff38
+      size: 448695
     - path: models/pipeline_nesrece.pkl
       hash: md5
-      md5: a801240a3bcf2ec0dbf01a59c44277f5
-      size: 3746
+      md5: 5cac886eadbec81a9ec64410a3f47c4d
+      size: 3834
+    - path: models/shap_per_obcina.json
+      hash: md5
+      md5: de53125790302cdd50ff5768706e9fc3
+      size: 40625
+    - path: models/shap_values.npz
+      hash: md5
+      md5: a10a822c41eb033cb7e1f1503b1f7628
+      size: 74046
   predict_nesrece:
     cmd: uv run python src/models/predict.py
     deps:
@@ -193,18 +201,22 @@ stages:
       size: 449809
     - path: models/pipeline_nesrece.pkl
       hash: md5
-      md5: a801240a3bcf2ec0dbf01a59c44277f5
-      size: 3746
+      md5: 5cac886eadbec81a9ec64410a3f47c4d
+      size: 3834
     - path: src/models/predict.py
       hash: md5
-      md5: 6ac666da39302826ede3b4844883dbf1
-      size: 3235
+      md5: 9e284c28976f0fcd79ceae3418fd82a5
+      size: 4381
     - path: src/models/preprocess.py
       hash: md5
-      md5: ce94f32b6e5890dfa205c3bae776ce8e
-      size: 2891
+      md5: 47697d65230374e069b7f460255b42af
+      size: 3356
     outs:
+    - path: data/predictions/hourly.json
+      hash: md5
+      md5: 865d419e26df2e88bc05e6233c7fe708
+      size: 33750
     - path: data/predictions/today.json
       hash: md5
-      md5: b5793c2269496486d8f6804b63a002e4
-      size: 2449
+      md5: 0d9f507f6c03eb306b68f8067dd689e5
+      size: 2543
