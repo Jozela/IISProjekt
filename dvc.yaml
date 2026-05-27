@@ -91,11 +91,15 @@ stages:
       - train_nesrece.window_size
       - train_nesrece.random_state
     outs:
-      - models/model_nesrece.keras:
+      - models/model_nesrece.pkl:
           persist: true
       - models/pipeline_nesrece.pkl:
           persist: true
       - models/merger_nesrece.pkl:
+          persist: true
+      - models/shap_values.npz:
+          persist: true
+      - models/shap_per_obcina.json:
           persist: true
 
   predict_nesrece:

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nesreče v Cestnem Prometu — Slovenija</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    :root {
+      --bg:      #0a0c10;
+      --surface: #12151c;
+      --border:  #1e2330;
+      --text:    #e8eaf0;
+      --muted:   #5a6070;
+      --accent:  #ff4d4d;
+      --safe:    #00e5a0;
+      --warn:    #ffd166;
+      --danger:  #ff4d4d;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Syne', sans-serif;
+      height: 100vh; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 24px;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      z-index: 1000; flex-shrink: 0;
+    }
+    header h1 { font-size: 1rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    header h1 span { color: var(--accent); }
+    .header-meta { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+    .live-dot {
+      display: inline-block; width: 6px; height: 6px;
+      background: var(--safe); border-radius: 50%; margin-right: 6px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.4)} }
+    .layout { display: flex; flex: 1; overflow: hidden; }
+    #map { flex: 1; background: var(--bg); }
+
+    /* ── Right panel ── */
+    .panel {
+      width: 340px; background: var(--surface);
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .panel-section { padding: 16px 20px; border-bottom: 1px solid var(--border); }
+    .panel-label {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px;
+    }
+
+    /* ── Selected card ── */
+    #selected-card {
+      padding: 20px; border-bottom: 1px solid var(--border);
+      min-height: 110px; display: flex; flex-direction: column; justify-content: center;
+    }
+    .card-placeholder { color: var(--muted); font-size: 0.85rem; font-style: italic; }
+    .card-name { font-size: 1.3rem; font-weight: 800; margin-bottom: 6px; }
+    .card-prob { font-family: 'Space Mono', monospace; font-size: 2.6rem; font-weight: 700; line-height: 1; }
+    .card-prob .unit { font-size: 1rem; color: var(--muted); margin-left: 4px; }
+    .card-risk-label { font-size: 0.75rem; margin-top: 6px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    /* ── SHAP section ── */
+    #shap-section { padding: 16px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    #shap-bars { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+    .shap-row { display: flex; flex-direction: column; gap: 3px; }
+    .shap-row-header { display: flex; justify-content: space-between; font-size: 0.72rem; }
+    .shap-fname { color: var(--text); font-weight: 600; }
+    .shap-fval  { font-family: 'Space Mono', monospace; color: var(--muted); font-size: 0.65rem; }
+    .shap-bar-bg { background: var(--border); border-radius: 2px; height: 5px; overflow: hidden; }
+    .shap-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+    #shap-placeholder { color: var(--muted); font-size: 0.8rem; font-style: italic; }
+
+    /* ── Legend ── */
+    .legend-bars { display: flex; flex-direction: column; gap: 7px; }
+    .legend-row { display: flex; align-items: center; gap: 10px; font-size: 0.78rem; }
+    .legend-swatch { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+    /* ── Top list ── */
+    .top-list { flex: 1; overflow-y: auto; }
+    .top-list::-webkit-scrollbar { width: 4px; }
+    .top-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .top-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 20px; border-bottom: 1px solid var(--border);
+      cursor: pointer; transition: background 0.15s;
+    }
+    .top-item:hover { background: rgba(255,255,255,0.03); }
+    .top-item-name { font-size: 0.82rem; font-weight: 600; }
+    .top-item-rank { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--muted); margin-right: 8px; }
+    .top-item-prob { font-family: 'Space Mono', monospace; font-size: 0.82rem; font-weight: 700; }
+
+    /* ── Loading ── */
+    #loading {
+      position: fixed; inset: 0; background: var(--bg);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 9999; gap: 16px;
+    }
+    #loading h2 { font-size: 1rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid var(--border); border-top-color: var(--accent);
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Leaflet ── */
+    .leaflet-container { background: #0d1018 !important; }
+    .leaflet-popup-content-wrapper {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); font-family: 'Syne', sans-serif; box-shadow: 0 8px 32px rgba(0,0,0,.6);
+    }
+    .leaflet-popup-tip { background: var(--surface); }
+    .popup-title { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+    .popup-prob  { font-family: 'Space Mono', monospace; font-size: 1.5rem; font-weight: 700; }
+    .popup-risk  { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="spinner"></div>
+  <h2>Nalagam napovedi...</h2>
+</div>
+
+<header>
+  <h1>Nesreče — <span>Slovenija</span></h1>
+  <div class="header-meta"><span class="live-dot"></span>Verjetnost prometne nesreče po občinah</div>
+</header>
+
+<div class="layout">
+  <div id="map"></div>
+
+  <div class="panel">
+    <div id="selected-card">
+      <div class="card-placeholder">Kliknite na občino za podrobnosti</div>
+    </div>
+
+    <!-- SHAP explanation -->
+    <div id="shap-section">
+      <div class="panel-label">Razlaga napovedi (SHAP)</div>
+      <div id="shap-bars">
+        <div id="shap-placeholder">Izberite občino za razlago</div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="panel-section">
+      <div class="panel-label">Legenda</div>
+      <div class="legend-bars">
+        <div class="legend-row"><div class="legend-swatch" style="background:#00e5a0"></div><span>Nizko (0–20%)</span></div>
+        <div class="legend-row"><div class="legend-swatch" style="background:#ffd166"></div><span>Zmerno (20–50%)</span></div>
+        <div class="legend-row"><div class="legend-swatch" style="background:#ff8c42"></div><span>Visoko (50–75%)</span></div>
+        <div class="legend-row"><div class="legend-swatch" style="background:#ff4d4d"></div><span>Kritično (75–100%)</span></div>
+        <div class="legend-row"><div class="legend-swatch" style="background:#2a2f3d"></div><span>Ni podatkov</span></div>
+      </div>
+    </div>
+
+    <!-- Top 10 -->
+    <div class="panel-section" style="padding-bottom:8px">
+      <div class="panel-label">Najvišje tveganje — Top 10</div>
+    </div>
+    <div class="top-list" id="top-list"></div>
+  </div>
+</div>
+
+<script>
+const map = L.map('map', { center: [46.15, 14.995], zoom: 8, preferCanvas: true });
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '© OpenStreetMap © CARTO', subdomains: 'abcd', maxZoom: 19,
+}).addTo(map);
+
+function probColor(p) {
+  if (p == null) return '#2a2f3d';
+  if (p < 20)   return '#00e5a0';
+  if (p < 50)   return '#ffd166';
+  if (p < 75)   return '#ff8c42';
+  return '#ff4d4d';
+}
+function riskLabel(p) {
+  if (p == null) return { text: 'Ni podatkov', color: '#5a6070' };
+  if (p < 20)   return { text: 'Nizko tveganje',    color: '#00e5a0' };
+  if (p < 50)   return { text: 'Zmerno tveganje',   color: '#ffd166' };
+  if (p < 75)   return { text: 'Visoko tveganje',   color: '#ff8c42' };
+  return             { text: 'Kritično tveganje', color: '#ff4d4d' };
+}
+
+// ── SHAP bar chart ────────────────────────────────────────────────────────────
+const FEATURE_LABELS = {
+  avg_temp_c:             'Povp. temperatura',
+  min_temp_c:             'Min. temperatura',
+  max_temp_c:             'Max. temperatura',
+  precip_mm:              'Padavine (mm)',
+  snowfall_cm:            'Sneg (cm)',
+  cloud_cover_pct:        'Oblačnost (%)',
+  sunshine_duration_sec:  'Sončno obsevanje',
+  day_of_week:            'Dan v tednu',
+  month:                  'Mesec',
+  is_weekend:             'Vikend',
+  obcina_enc:             'Občina',
+  sunny:                  'Sončno',
+  rainy:                  'Deževno',
+  snowy:                  'Snežno',
+  icy:                    'Ledeno',
+  frost:                  'Slana',
+  fog:                    'Megla',
+};
+
+async function loadShap(obcina, prob) {
+  const container = document.getElementById('shap-bars');
+  container.innerHTML = '<div id="shap-placeholder" style="color:var(--muted);font-size:.8rem">Nalagam...</div>';
+
+  try {
+    const res  = await fetch(`/api/shap/${encodeURIComponent(obcina)}`);
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message);
+
+    const top = data.features.slice(0, 8);
+    const max = top[0]?.importance || 1;
+    const color = probColor(prob);
+
+    container.innerHTML = top.map(f => `
+      <div class="shap-row">
+        <div class="shap-row-header">
+          <span class="shap-fname">${FEATURE_LABELS[f.name] || f.name}</span>
+          <span class="shap-fval">${f.importance.toFixed(4)}</span>
+        </div>
+        <div class="shap-bar-bg">
+          <div class="shap-bar-fill" style="width:${(f.importance/max*100).toFixed(1)}%;background:${color}"></div>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    container.innerHTML = `<div style="color:var(--muted);font-size:.75rem">SHAP ni na voljo: ${e.message}</div>`;
+  }
+}
+
+// ── Selected card ─────────────────────────────────────────────────────────────
+function showCard(name, prob) {
+  const risk = riskLabel(prob);
+  document.getElementById('selected-card').innerHTML = `
+    <div class="card-name">${name}</div>
+    <div class="card-prob" style="color:${probColor(prob)}">
+      ${prob != null ? prob.toFixed(1) : '—'}<span class="unit">%</span>
+    </div>
+    <div class="card-risk-label" style="color:${risk.color}">${risk.text}</div>
+  `;
+  loadShap(name, prob);
+}
+
+// ── Labels on zoom ────────────────────────────────────────────────────────────
+let labelsLayer = L.layerGroup().addTo(map);
+function updateLabels(gjLayer, preds) {
+  labelsLayer.clearLayers();
+  if (map.getZoom() < 9) return;
+  gjLayer.eachLayer(layer => {
+    const name = layer.feature.properties.OB_UIME || layer.feature.properties.name;
+    const prob = preds[name];
+    if (prob == null) return;
+    const center = layer.getBounds().getCenter();
+    L.marker(center, { icon: L.divIcon({
+      className: '',
+      html: `<div style="background:rgba(10,12,16,.85);border:1px solid ${probColor(prob)};border-radius:4px;padding:2px 6px;font-family:'Space Mono',monospace;font-size:${map.getZoom()>=11?'11px':'9px'};font-weight:700;color:${probColor(prob)};white-space:nowrap;pointer-events:none">${prob.toFixed(1)}%</div>`,
+      iconAnchor: [20, 10],
+    })}).addTo(labelsLayer);
+  });
+}
+
+// ── Top 10 ────────────────────────────────────────────────────────────────────
+function buildTopList(preds, gjLayer) {
+  const sorted = Object.entries(preds).filter(([,v])=>v!=null).sort(([,a],[,b])=>b-a).slice(0,10);
+  const list = document.getElementById('top-list');
+  list.innerHTML = '';
+  sorted.forEach(([name, prob], i) => {
+    const item = document.createElement('div');
+    item.className = 'top-item';
+    item.innerHTML = `
+      <div style="display:flex;align-items:center">
+        <span class="top-item-rank">${String(i+1).padStart(2,'0')}</span>
+        <span class="top-item-name">${name}</span>
+      </div>
+      <span class="top-item-prob" style="color:${probColor(prob)}">${prob.toFixed(1)}%</span>
+    `;
+    item.addEventListener('click', () => {
+      gjLayer.eachLayer(layer => {
+        if ((layer.feature.properties.OB_UIME || layer.feature.properties.name) === name) {
+          map.fitBounds(layer.getBounds(), { padding: [40,40] });
+          showCard(name, prob);
+        }
+      });
+    });
+    list.appendChild(item);
+  });
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+async function init() {
+  const geoRes  = await fetch('https://raw.githubusercontent.com/Grega90/slovenija-gis/master/obcine.geojson').catch(()=>null);
+  const geoData = geoRes?.ok
+    ? await geoRes.json()
+    : await fetch('https://raw.githubusercontent.com/stefanb/gurs-rpe/master/data/OB.geojson').then(r=>r.json());
+
+  const predData   = await fetch('/api/predictions').then(r=>r.json());
+  const predictions = predData.predictions || {};
+
+  const gjLayer = L.geoJSON(geoData, {
+    style: f => {
+      const name = f.properties.OB_UIME || f.properties.name;
+      const prob = predictions[name] ?? null;
+      return { fillColor: probColor(prob), fillOpacity: 0.65, color: '#0a0c10', weight: 1 };
+    },
+    onEachFeature: (feature, layer) => {
+      const name = feature.properties.OB_UIME || feature.properties.name;
+      const prob = predictions[name] ?? null;
+      const risk = riskLabel(prob);
+      layer.bindPopup(`
+        <div class="popup-title">${name}</div>
+        <div class="popup-prob" style="color:${probColor(prob)}">${prob!=null?prob.toFixed(1)+'%':'N/A'}</div>
+        <div class="popup-risk" style="color:${risk.color}">${risk.text}</div>
+      `);
+      layer.on('click', () => showCard(name, prob));
+      layer.on('mouseover', function(){ this.setStyle({fillOpacity:.85,weight:2,color:'#fff'}); });
+      layer.on('mouseout',  function(){ this.setStyle({fillOpacity:.65,weight:1,color:'#0a0c10'}); });
+    },
+  }).addTo(map);
+
+  map.on('zoomend', () => updateLabels(gjLayer, predictions));
+  updateLabels(gjLayer, predictions);
+  buildTopList(predictions, gjLayer);
+  document.getElementById('loading').style.display = 'none';
+}
+
+init().catch(err => {
+  document.getElementById('loading').innerHTML =
+    `<div style="color:#ff4d4d;font-family:'Space Mono',monospace;font-size:.8rem;text-align:center;padding:20px">Napaka: ${err.message}</div>`;
+});
+</script>
+</body>
+</html>

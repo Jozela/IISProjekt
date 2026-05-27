@@ -13,15 +13,15 @@ stages:
     outs:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: 8c6a9ebea64a9cf2214b9320ff623be0
-      size: 36566
+      md5: 976d5f906a884b2637568be926593133
+      size: 36478
   preprocess:
     cmd: uv run python src/data/process_spin_data.py
     deps:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: 8c6a9ebea64a9cf2214b9320ff623be0
-      size: 36566
+      md5: 976d5f906a884b2637568be926593133
+      size: 36478
     - path: src/data/process_spin_data.py
       hash: md5
       md5: 35b0258b72287b9fd266a4b9cc9f19fe
@@ -129,7 +129,7 @@ stages:
       size: 13591
     - path: reports/nesrece_data_testing_report.html
       hash: md5
-      md5: 922edc090f8a6fca2b530199d67bc8a3
+      md5: 884138add7ffaa7e7a47b664d45f3256
       size: 3879797
   train_nesrece:
     cmd: "uv run python src/models/train.py\ngit commit -am \"Updated nesrece model
@@ -137,24 +137,24 @@ stages:
     deps:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: e19c433b176f084c015debfb7d5ca4d4
-      size: 13170
+      md5: 9a5517a4a4a3f66c143039dabfef5360
+      size: 13594
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: d7935dc4e034c6209ef206d7607df0d2
-      size: 504333
+      md5: 567bb5911400f651c4355c508e9bc7d7
+      size: 520210
     - path: data/reference/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 55699e09fede3ff563342ebf718b34c8
-      size: 13167
+      md5: 27dfa4b1cb5b060a814301903dd71daf
+      size: 13591
     - path: src/models/preprocess.py
       hash: md5
       md5: ce94f32b6e5890dfa205c3bae776ce8e
       size: 2891
     - path: src/models/train.py
       hash: md5
-      md5: 89ec17067a5ed5c7a388c23d95d679a1
-      size: 13564
+      md5: 4ec0b1c699f22a6092da51521b2cf773
+      size: 13716
     params:
       params.yaml:
         train_nesrece.nesrece_path: 
@@ -170,9 +170,41 @@ stages:
       size: 79
     - path: models/model_nesrece.keras
       hash: md5
-      md5: 11ff28c5f8bdc500828ba6e53711d2f7
-      size: 452873
+      md5: 8041c6b2b713c4a7514f40bf101dcc47
+      size: 449809
     - path: models/pipeline_nesrece.pkl
       hash: md5
-      md5: fd7e02963251cc753b35a161ebc31d2a
+      md5: a801240a3bcf2ec0dbf01a59c44277f5
       size: 3746
+  predict_nesrece:
+    cmd: uv run python src/models/predict.py
+    deps:
+    - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
+      hash: md5
+      md5: 9a5517a4a4a3f66c143039dabfef5360
+      size: 13594
+    - path: data/preprocessed/obcina_vreme_processed.csv
+      hash: md5
+      md5: 567bb5911400f651c4355c508e9bc7d7
+      size: 520210
+    - path: models/model_nesrece.keras
+      hash: md5
+      md5: 8041c6b2b713c4a7514f40bf101dcc47
+      size: 449809
+    - path: models/pipeline_nesrece.pkl
+      hash: md5
+      md5: a801240a3bcf2ec0dbf01a59c44277f5
+      size: 3746
+    - path: src/models/predict.py
+      hash: md5
+      md5: 6ac666da39302826ede3b4844883dbf1
+      size: 3235
+    - path: src/models/preprocess.py
+      hash: md5
+      md5: ce94f32b6e5890dfa205c3bae776ce8e
+      size: 2891
+    outs:
+    - path: data/predictions/today.json
+      hash: md5
+      md5: b5793c2269496486d8f6804b63a002e4
+      size: 2449
