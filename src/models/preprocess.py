@@ -16,10 +16,9 @@ class NesreceWeatherPreprocessor(BaseEstimator, TransformerMixin):
         nesrece_df = nesrece_df.copy()
         vreme_df   = vreme_df.copy()
 
-        nesrece_df["nastanekCas"] = pd.to_datetime(
-            nesrece_df["nastanekCas"], errors="coerce"
-        )
-        nesrece_df["day_slot"] = nesrece_df["nastanekCas"].dt.floor("D")
+        nesrece_df["nastanekCas"] = pd.to_datetime(nesrece_df["nastanekCas"], errors="coerce")
+        nesrece_df["day_slot"]    = nesrece_df["nastanekCas"].dt.floor("D")
+        nesrece_df["hour"]        = nesrece_df["nastanekCas"].dt.hour
 
         vreme_df["date"]     = pd.to_datetime(vreme_df["date"], errors="coerce")
         vreme_df["day_slot"] = vreme_df["date"].dt.floor("D")
@@ -32,6 +31,14 @@ class NesreceWeatherPreprocessor(BaseEstimator, TransformerMixin):
             .reset_index(name="accident_count")
         )
         accidents["label"] = (accidents["accident_count"] > 0).astype(int)
+
+        # Average accident hour per (obcina, day)
+        hour_stats = (
+            nesrece_df
+            .groupby(["obcinaNaziv", "day_slot"])["hour"]
+            .mean()
+            .reset_index(name="avg_accident_hour")
+        )
 
         # Full (obcina x day) grid
         all_obcine = nesrece_df["obcinaNaziv"].unique()
@@ -49,6 +56,11 @@ class NesreceWeatherPreprocessor(BaseEstimator, TransformerMixin):
             on=["obcinaNaziv", "day_slot"], how="left"
         )
         grid["label"] = grid["label"].fillna(0).astype(int)
+
+        grid = grid.merge(
+            hour_stats, on=["obcinaNaziv", "day_slot"], how="left"
+        )
+        grid["avg_accident_hour"] = grid["avg_accident_hour"].fillna(-1)
 
         # Merge weather
         grid = grid.merge(

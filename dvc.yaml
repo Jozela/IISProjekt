@@ -114,3 +114,5 @@ stages:
     outs:
       - data/predictions/today.json:
           persist: true
+      - data/predictions/hourly.json:
+          persist: true

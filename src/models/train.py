@@ -47,6 +47,7 @@ NUMERIC_FEATURES = [
     "sunshine_duration_sec",
     "day_of_week", "month", "is_weekend",
     "obcina_enc",
+    "avg_accident_hour",   # new
 ]
 BINARY_FEATURES = ["sunny", "rainy", "snowy", "icy", "frost", "fog"]
 ALL_FEATURES    = NUMERIC_FEATURES + BINARY_FEATURES
