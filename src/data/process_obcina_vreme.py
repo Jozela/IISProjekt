@@ -1,49 +1,43 @@
 import os
-import pandas as pd
-import os
 import yaml
-import pandas as pd 
-# =========================
-# CONFIG
-# =========================
-params = yaml.safe_load(open("params.yaml"))["preprocess_vreme"]
+import pandas as pd
 
-RAW_PATH = params["raw_path"]
-PROCESSED_PATH = params["processed_path"]
+def main():
+    params = yaml.safe_load(open("params.yaml"))["preprocess_vreme"]
+    raw_path = params["raw_path"]
+    processed_path = params["processed_path"]
 
-PROCESSED_DIR = os.path.dirname(PROCESSED_PATH)
+    os.makedirs(os.path.dirname(processed_path), exist_ok=True)
 
-# =========================
-# CREATE FOLDER IF MISSING
-# =========================
-os.makedirs(PROCESSED_DIR, exist_ok=True)
+    df = pd.read_csv(raw_path)
 
-# =========================
-# LOAD RAW DATA
-# =========================
-raw_df = pd.read_csv(RAW_PATH)
+    # Drop lat/lon if present (optional)
+    for col in ("lat", "lon"):
+        if col in df.columns:
+            df = df.drop(columns=[col])
 
-# Remove lat/lon columns if they exist
-for col in ["lat", "lon"]:
-    if col in raw_df.columns:
-        raw_df = raw_df.drop(columns=col)
+    # Parse datetime, keep hourly timestamps
+    if "date" not in df.columns:
+        raise ValueError(f"'date' column missing in {raw_path}. Columns: {df.columns.tolist()}")
 
-# =========================
-# APPEND TO PROCESSED FILE
-# =========================
-backup_file = "/tmp/vreme_backup.csv"
-if os.path.exists(backup_file):
-    existing_df = pd.read_csv(backup_file)
-    combined_df = pd.concat([existing_df, raw_df], ignore_index=True)
-else:
-    combined_df = raw_df
+    df["date"] = pd.to_datetime(df["date"], errors="coerce")
+    df = df.dropna(subset=["date", "obcina"])
 
-# Optional: remove duplicates (same date + obcina)
-combined_df = combined_df.drop_duplicates(subset=["date", "obcina"], keep="last")
+    # Enforce one row per municipality-hour
+    df = df.drop_duplicates(subset=["obcina", "date"], keep="last")
 
-# =========================
-# SAVE BACK
-# =========================
-combined_df.to_csv(PROCESSED_PATH, index=False)
-print(f"Processed data saved to: {PROCESSED_PATH}")
-print(f"Total rows now: {len(combined_df)}")
+    # Sort for reproducibility
+    df = df.sort_values(["date", "obcina"]).reset_index(drop=True)
+
+    # Save with ISO timestamps including hour/minute (matches your raw format)
+    out = df.copy()
+    out["date"] = out["date"].dt.strftime("%Y-%m-%dT%H:%M")
+    out.to_csv(processed_path, index=False, encoding="utf-8")
+
+    print(f"Processed data saved to: {processed_path}")
+    print(f"Total rows now: {len(out)}")
+    print("Min/max:", out["date"].min(), "->", out["date"].max())
+    print("Unique hours:", sorted(pd.to_datetime(out["date"]).dt.hour.unique()))
+
+if __name__ == "__main__":
+    main()

@@ -24,10 +24,12 @@ stages:
     deps:
       - src/data/obcina_vreme.py
     params:
-      - fetch_vreme.days_back
-      - fetch_vreme.request_sleep
-      - fetch_vreme.obcine_path
-      - fetch_vreme.url
+    - fetch_vreme.url
+    - fetch_vreme.obcine_path
+    - fetch_vreme.request_sleep
+    - fetch_vreme.timezone
+    - fetch_vreme.past_days
+    - fetch_vreme.horizon_hours
     always_changed: true
     outs:
       - data/raw/obcina_vreme.csv
