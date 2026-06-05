@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+.venv
+venv/
+.git/
+.dvc/
+.dvcignore
+gx/
+reports/
+*.ipynb
+.DS_Store

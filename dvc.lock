@@ -139,32 +139,32 @@ stages:
     deps:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 0461e7673b479ddc686c579b6c19b77e
-      size: 13646
+      md5: fd5b21fb2db05a6ee22ed3d3450fddfc
+      size: 14604
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: 567bb5911400f651c4355c508e9bc7d7
-      size: 520210
+      md5: 357e1a622352a9b705ebd3e74fdc980d
+      size: 13831681
     - path: data/reference/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 87e1d3cb511b13599f1d0c23552f33bd
-      size: 13643
+      md5: e75615462042703865eb99360228d620
+      size: 18356
     - path: src/models/preprocess.py
       hash: md5
-      md5: 094d18e73ca8054c4cc7bb253df6f854
-      size: 3450
+      md5: cc2798049cd693a1a2a790d8052558f4
+      size: 3084
     - path: src/models/train.py
       hash: md5
-      md5: ffbeac56b5ad5c450d6db2b4b5ac8bc7
-      size: 11998
+      md5: 1ccc16c87eba4fd26126fd8501fd4b32
+      size: 9779
     params:
       params.yaml:
         train_nesrece.nesrece_path: 
           data/preprocessed/nesrece_v_cestnem_prometu.csv
         train_nesrece.random_state: 42
-        train_nesrece.test_size: 60
+        train_nesrece.test_size: 500
         train_nesrece.vreme_path: data/preprocessed/obcina_vreme_processed.csv
-        train_nesrece.window_size: 7
+        train_nesrece.window_size: 24
     outs:
     - path: models/merger_nesrece.pkl
       hash: md5
@@ -172,19 +172,19 @@ stages:
       size: 79
     - path: models/model_nesrece.pkl
       hash: md5
-      md5: 82b9b9ab77995d0178446eeed93441cf
-      size: 448108
+      md5: 2bd618bc81d313ce2feb8ba3b75d1bc1
+      size: 408766
     - path: models/pipeline_nesrece.pkl
       hash: md5
-      md5: c30ab114e894f14e242508ee9c2614ea
-      size: 3818
+      md5: d29495544ed3f152216137a82f8ed219
+      size: 3834
     - path: models/shap_per_obcina.json
       hash: md5
       md5: 461d0066c693c312b71133141621c564
       size: 38367
     - path: models/shap_values.npz
       hash: md5
-      md5: 4572e75542c5b0240eac84b99c53451e
+      md5: 069af4a79ed7fab07bc61b44b884b383
       size: 74046
   predict_nesrece:
     cmd: uv run python src/models/predict.py

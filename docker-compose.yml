@@ -1,0 +1,18 @@
+services:
+  app:
+    build: .
+    ports:
+      - "5001:5001"
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      CENTROIDS_PATH: /app/data/obcine_centroids.json
+      PREDICTIONS_PATH: /app/data/predictions/today.json
+      HOURLY_PATH: /app/data/predictions/hourly.json
+      SHAP_PATH: /app/models/shap_per_obcina.json
+      MODEL_PATH: /app/models/model_nesrece.pkl
+      PIPELINE_PATH: /app/models/pipeline_nesrece.pkl
+      MERGER_PATH: /app/models/merger_nesrece.pkl
+      SHAP_NPZ: /app/models/shap_values.npz
+    volumes:
+      - ./data/predictions:/app/data/predictions
+    restart: unless-stopped
