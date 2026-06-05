@@ -13,14 +13,14 @@ stages:
     outs:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: 2406c6e86cbb52fb344fd3aac9200047
+      md5: 3a67109613774e934a0bb404a7cd3fce
       size: 39738
   preprocess:
     cmd: uv run python src/data/process_spin_data.py
     deps:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: 2406c6e86cbb52fb344fd3aac9200047
+      md5: 3a67109613774e934a0bb404a7cd3fce
       size: 39738
     - path: src/data/process_spin_data.py
       hash: md5
@@ -52,15 +52,15 @@ stages:
     outs:
     - path: data/raw/obcina_vreme.csv
       hash: md5
-      md5: 15e8eee83618c603a400ea82fd515d04
-      size: 20964360
+      md5: 70358a8a7120c026115e441c1f482b56
+      size: 20868140
   preprocess_vreme:
     cmd: uv run python src/data/process_obcina_vreme.py
     deps:
     - path: data/raw/obcina_vreme.csv
       hash: md5
-      md5: 15e8eee83618c603a400ea82fd515d04
-      size: 20964360
+      md5: 70358a8a7120c026115e441c1f482b56
+      size: 20868140
     - path: src/data/process_obcina_vreme.py
       hash: md5
       md5: 16d8d9d17d9a9c1d5ed89bdd7c8a208e
@@ -73,8 +73,8 @@ stages:
     outs:
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: 542875de01e49ab02d39f01380cdf8f8
-      size: 14740024
+      md5: 180cf5e48a91f6b5c8a19df49ad2267a
+      size: 14673900
   validate_nesrece:
     cmd: "cd gx && uv run python run_checkpoint.py\n"
     deps:
@@ -99,8 +99,8 @@ stages:
     deps:
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: 542875de01e49ab02d39f01380cdf8f8
-      size: 14740024
+      md5: 180cf5e48a91f6b5c8a19df49ad2267a
+      size: 14673900
     - path: gx/checkpoints/vreme_checkpoint.yml
       hash: md5
       md5: 258afd18a74b9509af3bc5f929662c3b
@@ -131,7 +131,7 @@ stages:
       size: 19546
     - path: reports/nesrece_data_testing_report.html
       hash: md5
-      md5: ff57ac3af6456011f4ba0a54710e7e9e
+      md5: 3509848a21e54f9ed80c2dfd934975c8
       size: 3838726
   train_nesrece:
     cmd: "uv run python src/models/train.py\ngit commit -am \"Updated nesrece model
