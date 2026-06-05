@@ -14,4 +14,5 @@ requests>=2.31
 
 # Google Gemini (chat_route.py)
 google-genai>=0.8
-PyYAML>=6.0xgboost
+PyYAML>=6.0
+xgboost>=1.7
