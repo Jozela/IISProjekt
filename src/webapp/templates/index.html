@@ -672,17 +672,17 @@ async function init() {
     : await fetch('https://raw.githubusercontent.com/stefanb/gurs-rpe/master/data/OB.geojson').then(r=>r.json());
 
   const predData    = await fetch('/api/predictions').then(r=>r.json());
-  const predictions = predData.predictions || {};
+  const predictions = predData.predictions_by_obcina || {};
 
   const gjLayer = L.geoJSON(geoData, {
     style: f => {
       const name = f.properties.OB_UIME || f.properties.name;
-      const prob = predictions[name] ?? null;
+      const _arr = predictions[name]; const prob = _arr && _arr[0] ? _arr[0].probability_percent : null;
       return { fillColor: probColor(prob), fillOpacity: 0.65, color: '#0a0c10', weight: 1 };
     },
     onEachFeature: (feature, layer) => {
       const name = feature.properties.OB_UIME || feature.properties.name;
-      const prob = predictions[name] ?? null;
+      const _arr = predictions[name]; const prob = _arr && _arr[0] ? _arr[0].probability_percent : null;
       const risk = riskLabel(prob);
       layer.bindPopup(`
         <div class="popup-title">${name}</div>
