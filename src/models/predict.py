@@ -13,11 +13,11 @@ VREME_PATH = params["vreme_path"]
 WINDOW_SIZE = int(params["window_size"])
 TIME_FREQ = params.get("time_freq", "h")
 
-MODEL_PATH = "models/model_nesrece.pkl"
-PIPELINE_PATH = "models/pipeline_nesrece.pkl"
-MERGER_PATH = "models/merger_nesrece.pkl"
+MODEL_PATH = os.environ.get("MODEL_PATH", "/app/models/model_nesrece.pkl")
+PIPELINE_PATH = os.environ.get("PIPELINE_PATH", "/app/models/pipeline_nesrece.pkl")
+MERGER_PATH = os.environ.get("MERGER_PATH", "/app/models/merger_nesrece.pkl")
 
-OUT_PATH = "data/predictions/next24h.json"
+OUT_PATH = os.environ.get("PREDICTIONS_PATH", "/app/data/predictions/next24h.json")
 
 NUMERIC_FEATURES = [
     "avg_temp_c", "min_temp_c", "max_temp_c",
