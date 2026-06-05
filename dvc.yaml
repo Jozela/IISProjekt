@@ -112,6 +112,3 @@ stages:
       - models/pipeline_nesrece.pkl
       - data/preprocessed/nesrece_v_cestnem_prometu.csv
       - data/preprocessed/obcina_vreme_processed.csv
-    outs:
-      - data/predictions/hourly.json:
-          persist: true
