@@ -64,4 +64,4 @@ EXPOSE 5001
 
 WORKDIR /app/src/webapp
 
-CMD ["sh", "-c", "python src/models/predict.py && gunicorn --bind 0.0.0.0:5001 --workers 2 --timeout 120 app:app"]
+CMD ["sh", "-c", "python /app/src/models/predict.py && gunicorn --bind 0.0.0.0:5001 --workers 2 --timeout 120 app:app"]
