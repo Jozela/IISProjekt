@@ -74,17 +74,18 @@ def predictions():
 
 @app.route("/api/predictions/hourly/<obcina>")
 def hourly(obcina):
-    data  = load_json(HOURLY_PATH)
-    preds = data.get("predictions", {})
+    data  = load_json(PREDICTIONS_PATH)
+    preds = data.get("predictions_by_obcina", {})
     hours = preds.get(obcina) or preds.get(
         next((k for k in preds if k.lower() == obcina.lower()), None), None
     )
+    probabilities = [h["probability_percent"] for h in hours] if hours else None
     return jsonify({
         "status":  "ok",
         "obcina":  obcina,
-        "date":    data.get("date"),
-        "hours":   list(range(24)),
-        "probabilities": hours,
+        "date":    data.get("generated_at"),
+        "hours":   list(range(len(probabilities))) if probabilities else list(range(24)),
+        "probabilities": probabilities,
     })
 
 @app.route("/api/shap/<obcina>")
@@ -119,8 +120,8 @@ def route_risk():
     end   = request.args.get("to", "")
     start_hour = int(request.args.get("start_hour", 8))
 
-    hourly_data = load_json(HOURLY_PATH)
-    preds = (hourly_data.get("predictions") or {})
+    hourly_data = load_json(PREDICTIONS_PATH)
+    preds = (hourly_data.get("predictions_by_obcina") or {})
 
     # MINI: hardcoded "pot" (to si kasneje izboljšaš z routingom)
     # Za demo je dovolj nekaj občin med MB in CE. Prilagodi na svoje ključe v JSON.
@@ -146,7 +147,7 @@ def route_risk():
 
         for h in hours:
             if 0 <= h < len(hours_list):
-                p_pct = hours_list[h]
+                p_pct = hours_list[h]["probability_percent"] if isinstance(hours_list[h], dict) else hours_list[h]
                 if p_pct is None:
                     continue
                 segment_probs.append(clamp01(float(p_pct) / 100.0))
@@ -194,8 +195,8 @@ def route_risk_live():
     coords, duration_s, distance_m = out  # coords: list of [lon, lat]
 
     # 2) podatki napovedi + centroidi
-    hourly_data = load_json(HOURLY_PATH)
-    preds = (hourly_data.get("predictions") or {})
+    hourly_data = load_json(PREDICTIONS_PATH)
+    preds = (hourly_data.get("predictions_by_obcina") or {})
     centroids = load_centroids()
     if not centroids:
         return jsonify({"status": "error", "message": "Missing centroids (data/obcine_centroids.json)"}), 500
@@ -215,7 +216,7 @@ def route_risk_live():
                 next((k for k in preds if k.lower() == obcina.lower()), None), None
             )
             if hours_list and 0 <= now_hour < len(hours_list):
-                p = hours_list[now_hour]
+                p = hours_list[now_hour]["probability_percent"] if isinstance(hours_list[now_hour], dict) else hours_list[now_hour]
                 if p is not None:
                     p_pct = float(p)
 
