@@ -27,6 +27,7 @@ COPY src/webapp/app.py                 src/webapp/app.py
 COPY src/webapp/chat_route.py          src/webapp/chat_route.py
 COPY src/webapp/build_api_artifacts.py src/webapp/build_api_artifacts.py
 COPY src/webapp/templates/             src/webapp/templates/
+COPY params.yaml params.yaml
 # Copy the models package (NesreceWeatherPreprocessor)
 COPY src/models/ src/models/
 
