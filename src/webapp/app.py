@@ -9,10 +9,10 @@ from flask import request
 from chat_route import chat_bp
 app = Flask(__name__)
 CORS(app)
-CENTROIDS_PATH   = os.environ.get("CENTROIDS_PATH", "data/obcine_centroids.json")
-PREDICTIONS_PATH = os.environ.get("PREDICTIONS_PATH", "data/predictions/today.json")
-HOURLY_PATH      = os.environ.get("HOURLY_PATH",      "data/predictions/hourly.json")
-SHAP_PATH        = os.environ.get("SHAP_PATH",        "models/shap_per_obcina.json")
+CENTROIDS_PATH   = os.environ.get("CENTROIDS_PATH", "/app/data/obcine_centroids.json")
+PREDICTIONS_PATH = os.environ.get("PREDICTIONS_PATH", "/app/data/predictions/next24h.json")
+HOURLY_PATH      = os.environ.get("HOURLY_PATH", "/app/data/predictions/hourly.json")
+SHAP_PATH        = os.environ.get("SHAP_PATH", "/app/models/shap_per_obcina.json")
 app.register_blueprint(chat_bp)
 
 def load_centroids():
