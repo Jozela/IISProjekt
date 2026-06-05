@@ -52,7 +52,7 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app \
     PORT=5001 \
     CENTROIDS_PATH=data/obcine_centroids.json \
-    PREDICTIONS_PATH=data/predictions/today.json \
+    PREDICTIONS_PATH=data/predictions/next24h.json \
     HOURLY_PATH=data/predictions/hourly.json \
     SHAP_PATH=models/shap_per_obcina.json \
     MODEL_PATH=models/model_nesrece.pkl \
@@ -64,4 +64,4 @@ EXPOSE 5001
 
 WORKDIR /app/src/webapp
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5001", "--workers", "2", "--timeout", "120", "app:app"]
+CMD ["sh", "-c", "python src/models/predict.py && gunicorn --bind 0.0.0.0:5001 --workers 2 --timeout 120 app:app"]

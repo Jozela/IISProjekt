@@ -113,7 +113,5 @@ stages:
       - data/preprocessed/nesrece_v_cestnem_prometu.csv
       - data/preprocessed/obcina_vreme_processed.csv
     outs:
-      - data/predictions/next24h.json:
-          persist: true
       - data/predictions/hourly.json:
           persist: true
