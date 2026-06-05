@@ -77,12 +77,13 @@ def main():
 
         preds = []
         for slot in future_slots:
-            fut = g[g["time_slot"] == slot]
-            if fut.empty:
+            hist = g[g["time_slot"] <= last_observed_slot].sort_values("time_slot")
+
+            if len(hist) < WINDOW_SIZE:
+                predictions_by_obcina[obcina] = []
                 continue
-            window = pd.concat([hist_tail, fut.iloc[:1]], ignore_index=True)
-            if len(window) != WINDOW_SIZE:
-                continue
+
+            window = hist.tail(WINDOW_SIZE).copy()
 
             p = predict_window(window)
             rec = {"time_slot": slot.isoformat(), "probability_percent": round(p * 100, 1)}
