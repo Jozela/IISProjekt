@@ -51,14 +51,14 @@ USER appuser
 ENV PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app \
     PORT=5001 \
-    CENTROIDS_PATH=data/obcine_centroids.json \
-    PREDICTIONS_PATH=data/predictions/next24h.json \
-    HOURLY_PATH=data/predictions/hourly.json \
-    SHAP_PATH=models/shap_per_obcina.json \
-    MODEL_PATH=models/model_nesrece.pkl \
-    PIPELINE_PATH=models/pipeline_nesrece.pkl \
-    MERGER_PATH=models/merger_nesrece.pkl \
-    SHAP_NPZ=models/shap_values.npz
+    CENTROIDS_PATH=/app/data/obcine_centroids.json \
+    PREDICTIONS_PATH=/app/data/predictions/next24h.json \
+    HOURLY_PATH=/app/data/predictions/hourly.json \
+    SHAP_PATH=/app/models/shap_per_obcina.json \
+    MODEL_PATH=/app/models/model_nesrece.pkl \
+    PIPELINE_PATH=/app/models/pipeline_nesrece.pkl \
+    MERGER_PATH=/app/models/merger_nesrece.pkl \
+    SHAP_NPZ=/app/models/shap_values.npz
 
 EXPOSE 5001
 
