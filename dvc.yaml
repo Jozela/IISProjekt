@@ -25,12 +25,12 @@ stages:
     deps:
       - src/data/obcina_vreme.py
     params:
-    - fetch_vreme.url
-    - fetch_vreme.obcine_path
-    - fetch_vreme.request_sleep
-    - fetch_vreme.timezone
-    - fetch_vreme.past_days
-    - fetch_vreme.horizon_hours
+      - fetch_vreme.url
+      - fetch_vreme.obcine_path
+      - fetch_vreme.request_sleep
+      - fetch_vreme.timezone
+      - fetch_vreme.past_days
+      - fetch_vreme.horizon_hours
     always_changed: true
     outs:
       - data/raw/obcina_vreme.csv
@@ -50,8 +50,7 @@ stages:
     cmd: |
       cd gx && uv run python run_checkpoint.py
     deps:
-      - data/preprocessed/nesrece_v_cestnem_prometu.csv:
-          persist: true
+      - data/preprocessed/nesrece_v_cestnem_prometu.csv
       - gx/run_checkpoint.py
       - gx/checkpoints/nesrece_checkpoint.yml
       - gx/expectations/nesrece_suite.json
@@ -68,8 +67,7 @@ stages:
   test_nesrece_data:
     cmd: uv run python src/data/test_nesrece_data.py
     deps:
-      - data/preprocessed/nesrece_v_cestnem_prometu.csv:
-          persist: true
+      - data/preprocessed/nesrece_v_cestnem_prometu.csv
       - src/data/test_nesrece_data.py
     outs:
       - data/reference/nesrece_v_cestnem_prometu.csv:
@@ -86,8 +84,7 @@ stages:
     deps:
       - src/models/train.py
       - src/models/preprocess.py
-      - data/preprocessed/nesrece_v_cestnem_prometu.csv:
-          persist: true
+      - data/preprocessed/nesrece_v_cestnem_prometu.csv
       - data/preprocessed/obcina_vreme_processed.csv
       - data/reference/nesrece_v_cestnem_prometu.csv
     params:
@@ -106,7 +103,6 @@ stages:
       - models/shap_values.npz:
           persist: true
 
-
   predict_nesrece:
     cmd: uv run python src/models/predict.py
     deps:
@@ -114,6 +110,5 @@ stages:
       - src/models/preprocess.py
       - models/model_nesrece.pkl
       - models/pipeline_nesrece.pkl
-      - data/preprocessed/nesrece_v_cestnem_prometu.csv:
-          persist: true
+      - data/preprocessed/nesrece_v_cestnem_prometu.csv
       - data/preprocessed/obcina_vreme_processed.csv
