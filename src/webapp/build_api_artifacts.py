@@ -12,7 +12,7 @@ PIPELINE_PATH= os.environ.get("PIPELINE_PATH","models/pipeline_nesrece.pkl")
 MERGER_PATH  = os.environ.get("MERGER_PATH",  "models/merger_nesrece.pkl")
 SHAP_NPZ     = os.environ.get("SHAP_NPZ",     "models/shap_values.npz")
 
-OUT_TODAY    = os.environ.get("PREDICTIONS_PATH", "data/predictions/today.json")
+OUT_TODAY = os.environ.get("ARTIFACTS_PATH", "/app/data/predictions/today.json")
 OUT_HOURLY   = os.environ.get("HOURLY_PATH",      "data/predictions/hourly.json")
 OUT_SHAP     = os.environ.get("SHAP_PATH",        "models/shap_per_obcina.json")
 
