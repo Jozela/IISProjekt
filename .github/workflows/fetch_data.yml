@@ -3,7 +3,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
-
 jobs:
   fetch_air:
     name: Fetch and pre-process air data
@@ -14,29 +13,23 @@ jobs:
         with:
           token: ${{ secrets.PAT_TOKEN }}
           fetch-depth: 0
-
+          clean: true
       - name: Setup Git
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-
       - name: Install dependencies
         run: uv sync --frozen
-
       - name: Setup DVC remote
         run: |
           dvc remote modify origin --local access_key_id ${{ secrets.DAGSHUB_ACCESS_KEY_ID }}
           dvc remote modify origin --local secret_access_key ${{ secrets.DAGSHUB_SECRET_ACCESS_KEY }}
           dvc remote modify origin --local endpointurl https://dagshub.com/Jozela/IISProjekt.s3
           dvc remote modify origin --local use_ssl true
-
       - name: Pull existing data
         run: |
-          dvc pull data/preprocessed/nesrece_v_cestnem_prometu.csv
-          dvc pull data/preprocessed/obcina_vreme_processed.csv
-          cp data/preprocessed/nesrece_v_cestnem_prometu.csv /tmp/nesrece_backup.csv || true
+          dvc pull data/preprocessed/obcina_vreme_processed.csv || true
           cp data/preprocessed/obcina_vreme_processed.csv /tmp/vreme_backup.csv || true
-
       - name: Run DVC pipeline
         env:
           DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
@@ -45,23 +38,16 @@ jobs:
         run: |
           dvc repro --force
           dvc push
-
-      - name: Commit predictions & DVC changes to Git
+      - name: Commit DVC changes to Git
         run: |
-          # Stop DVC from tracking predictions so they get committed to Git
-          dvc remove data/predictions/today.json.dvc 2>/dev/null || true
-          dvc remove data/predictions/hourly.json.dvc 2>/dev/null || true
-          git add data/predictions/today.json data/predictions/hourly.json dvc.lock
+          git add dvc.lock
           git commit -m "Fresh predictions $(date)" || echo "No changes to commit"
           git push || echo "Git push skipped"
-
-      # ── Docker: build fresh image with new predictions baked in ───────────
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -70,8 +56,6 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/issprojekt:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/issprojekt:${{ github.run_number }}
-
-      # ── Northflank: trigger redeploy with new image ────────────────────────
       - name: Trigger Northflank redeploy
         run: |
           curl -X POST \
