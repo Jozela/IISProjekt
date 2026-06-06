@@ -7,7 +7,7 @@ import pandas as pd
 
 from preprocess import NesreceWeatherPreprocessor
 
-params = yaml.safe_load(open("/app/params.yaml"))["train_nesrece"]
+params = yaml.safe_load(open(os.environ.get("PARAMS_PATH", "params.yaml")))["train_nesrece"]
 NESRECE_PATH = os.environ.get("NESRECE_PATH", params["nesrece_path"])
 VREME_PATH = os.environ.get("VREME_PATH", params["vreme_path"])
 WINDOW_SIZE = int(params["window_size"])
