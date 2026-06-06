@@ -143,8 +143,8 @@ stages:
       size: 15864
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: 5e1009fae09518d60483fc25b4a38850
-      size: 14867301
+      md5: b7693a8b1e150d21c3a95438bef48d3b
+      size: 14865096
     - path: data/reference/nesrece_v_cestnem_prometu.csv
       hash: md5
       md5: 07551139dcfe1a326ba7e2ffcf3e237b
@@ -172,15 +172,15 @@ stages:
       size: 79
     - path: models/model_nesrece.pkl
       hash: md5
-      md5: 1646334b786632686f15d4a571d2b498
-      size: 944655
+      md5: fd3697f799c810e68a0f90fec2d6825c
+      size: 900717
     - path: models/pipeline_nesrece.pkl
       hash: md5
-      md5: 7b2e968d070b6be53cf53c73148ecb2a
+      md5: 977e25a4ff80b701a625617150f8b191
       size: 3834
     - path: models/shap_values.npz
       hash: md5
-      md5: de460f1c40cf20030674e8d31b51921c
+      md5: ad1af3ee05247a5b22d185d0849629da
       size: 74046
   predict_nesrece:
     cmd: uv run python src/models/predict.py
@@ -191,15 +191,15 @@ stages:
       size: 15864
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: 5e1009fae09518d60483fc25b4a38850
-      size: 14867301
+      md5: b7693a8b1e150d21c3a95438bef48d3b
+      size: 14865096
     - path: models/model_nesrece.pkl
       hash: md5
-      md5: 1646334b786632686f15d4a571d2b498
-      size: 944655
+      md5: fd3697f799c810e68a0f90fec2d6825c
+      size: 900717
     - path: models/pipeline_nesrece.pkl
       hash: md5
-      md5: 7b2e968d070b6be53cf53c73148ecb2a
+      md5: 977e25a4ff80b701a625617150f8b191
       size: 3834
     - path: src/models/predict.py
       hash: md5
