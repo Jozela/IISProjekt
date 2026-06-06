@@ -44,8 +44,8 @@ def main():
 
     # Load the same inputs used for training (paths are stored inside the merger usage in your pipeline)
     # We’ll re-read via params.yaml-like convention: easiest is to read the already-preprocessed CSVs.
-    nesrece_path = "data/preprocessed/nesrece_v_cestnem_prometu.csv"
-    vreme_path   = "data/preprocessed/obcina_vreme_processed.csv"
+    nesrece_path = os.environ.get("NESRECE_PATH", "/app/data/preprocessed/nesrece_v_cestnem_prometu.csv")
+    vreme_path = os.environ.get("VREME_PATH", "/app/data/preprocessed/obcina_vreme_processed.csv")
     nesrece_df = pd.read_csv(nesrece_path)
     vreme_df   = pd.read_csv(vreme_path)
 
