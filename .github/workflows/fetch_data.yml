@@ -28,8 +28,8 @@ jobs:
           dvc remote modify origin --local use_ssl true
       - name: Pull existing data
         run: |
+          dvc pull data/preprocessed/nesrece_v_cestnem_prometu.csv || true
           dvc pull data/preprocessed/obcina_vreme_processed.csv || true
-          cp data/preprocessed/obcina_vreme_processed.csv /tmp/vreme_backup.csv || true
       - name: Run DVC pipeline
         env:
           DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
