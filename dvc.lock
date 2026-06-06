@@ -13,15 +13,15 @@ stages:
     outs:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: b75df03beb6a245205f9f645e8dd45cd
-      size: 25973
+      md5: d18d5799c22dfd7eb2ebebec59a62e98
+      size: 26674
   preprocess:
     cmd: uv run python src/data/process_spin_data.py
     deps:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: b75df03beb6a245205f9f645e8dd45cd
-      size: 25973
+      md5: d18d5799c22dfd7eb2ebebec59a62e98
+      size: 26674
     - path: src/data/process_spin_data.py
       hash: md5
       md5: 35b0258b72287b9fd266a4b9cc9f19fe
@@ -52,15 +52,15 @@ stages:
     outs:
     - path: data/raw/obcina_vreme.csv
       hash: md5
-      md5: cad8e076ba04e7501be98bfc309c9cad
-      size: 21091637
+      md5: 54fc1556cbe77d3f35cec77fdaa6130e
+      size: 21089432
   preprocess_vreme:
     cmd: uv run python src/data/process_obcina_vreme.py
     deps:
     - path: data/raw/obcina_vreme.csv
       hash: md5
-      md5: cad8e076ba04e7501be98bfc309c9cad
-      size: 21091637
+      md5: 54fc1556cbe77d3f35cec77fdaa6130e
+      size: 21089432
     - path: src/data/process_obcina_vreme.py
       hash: md5
       md5: 16d8d9d17d9a9c1d5ed89bdd7c8a208e
@@ -73,8 +73,8 @@ stages:
     outs:
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: 5e1009fae09518d60483fc25b4a38850
-      size: 14867301
+      md5: b7693a8b1e150d21c3a95438bef48d3b
+      size: 14865096
   validate_nesrece:
     cmd: "cd gx && uv run python run_checkpoint.py\n"
     deps:
@@ -99,8 +99,8 @@ stages:
     deps:
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: 5e1009fae09518d60483fc25b4a38850
-      size: 14867301
+      md5: b7693a8b1e150d21c3a95438bef48d3b
+      size: 14865096
     - path: gx/checkpoints/vreme_checkpoint.yml
       hash: md5
       md5: 258afd18a74b9509af3bc5f929662c3b
@@ -131,7 +131,7 @@ stages:
       size: 19885
     - path: reports/nesrece_data_testing_report.html
       hash: md5
-      md5: 7755386fab8d3e8a05e7a4c241a48239
+      md5: 9c0a9fea1f54e62f9144c329ce4d7705
       size: 3839222
   train_nesrece:
     cmd: "uv run python src/models/train.py\ngit commit -am \"Updated nesrece model
