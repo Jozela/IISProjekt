@@ -139,16 +139,16 @@ stages:
     deps:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 8eb9aa496e1c8577d44fe580609088dd
-      size: 16196
+      md5: 9ccd300136675be05eb55b98e9771f75
+      size: 16248
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: a3d30984156d342302ff8cbf26ec26f6
-      size: 14862133
+      md5: 3b87ab2442f0b235e1ca73b382384994
+      size: 14860926
     - path: data/reference/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: a3f0e35f701b5e2d5311612d62e80a80
-      size: 20284
+      md5: 61463251a98ee56113c36ec2811ea5e5
+      size: 20353
     - path: src/models/preprocess.py
       hash: md5
       md5: cc2798049cd693a1a2a790d8052558f4
@@ -172,34 +172,34 @@ stages:
       size: 79
     - path: models/model_nesrece.pkl
       hash: md5
-      md5: 783fd2a5db450935885474a6dba53914
-      size: 954262
+      md5: 61ccc648fc3b7cfd91776d10f455b828
+      size: 952622
     - path: models/pipeline_nesrece.pkl
       hash: md5
-      md5: f8ff96bafc1b3b1cf34075084b0022c4
+      md5: cefae843a3805dba53131a453e1455b3
       size: 3834
     - path: models/shap_values.npz
       hash: md5
-      md5: f2f7810ed0eb68e8c4b7c5c6cf4647bf
+      md5: c3c622a2b00de3bfa5ce0beedf5f3289
       size: 74046
   predict_nesrece:
     cmd: uv run python src/models/predict.py
     deps:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 8eb9aa496e1c8577d44fe580609088dd
-      size: 16196
+      md5: 9ccd300136675be05eb55b98e9771f75
+      size: 16248
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: a3d30984156d342302ff8cbf26ec26f6
-      size: 14862133
+      md5: 3b87ab2442f0b235e1ca73b382384994
+      size: 14860926
     - path: models/model_nesrece.pkl
       hash: md5
-      md5: 783fd2a5db450935885474a6dba53914
-      size: 954262
+      md5: 61ccc648fc3b7cfd91776d10f455b828
+      size: 952622
     - path: models/pipeline_nesrece.pkl
       hash: md5
-      md5: f8ff96bafc1b3b1cf34075084b0022c4
+      md5: cefae843a3805dba53131a453e1455b3
       size: 3834
     - path: src/models/predict.py
       hash: md5
