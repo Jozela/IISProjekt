@@ -61,5 +61,5 @@ jobs:
           curl -X POST \
             -H "Authorization: Bearer ${{ secrets.NORTHFLANK_API_TOKEN }}" \
             -H "Content-Type: application/json" \
-            https://api.northflank.com/v1/projects/${{ secrets.NORTHFLANK_PROJECT_ID }}/services/${{ secrets.NORTHFLANK_SERVICE_ID }}/deploy \
+            https://api.northflank.com/v1/teams/jozelavrics-team/projects/${{ secrets.NORTHFLANK_PROJECT_ID }}/services/${{ secrets.NORTHFLANK_SERVICE_ID }}/deploy \
             -d "{\"image\": \"${{ secrets.DOCKERHUB_USERNAME }}/issprojekt:latest\"}"
