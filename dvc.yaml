@@ -17,7 +17,8 @@ stages:
     params:
       - preprocess.station
     outs:
-      - data/preprocessed/nesrece_v_cestnem_prometu.csv
+      - data/preprocessed/nesrece_v_cestnem_prometu.csv:
+          persist: true
 
   fetch_vreme:
     cmd: uv run python src/data/obcina_vreme.py
@@ -49,7 +50,8 @@ stages:
     cmd: |
       cd gx && uv run python run_checkpoint.py
     deps:
-      - data/preprocessed/nesrece_v_cestnem_prometu.csv
+      - data/preprocessed/nesrece_v_cestnem_prometu.csv:
+          persist: true
       - gx/run_checkpoint.py
       - gx/checkpoints/nesrece_checkpoint.yml
       - gx/expectations/nesrece_suite.json
@@ -66,7 +68,8 @@ stages:
   test_nesrece_data:
     cmd: uv run python src/data/test_nesrece_data.py
     deps:
-      - data/preprocessed/nesrece_v_cestnem_prometu.csv
+      - data/preprocessed/nesrece_v_cestnem_prometu.csv:
+          persist: true
       - src/data/test_nesrece_data.py
     outs:
       - data/reference/nesrece_v_cestnem_prometu.csv:
@@ -83,7 +86,8 @@ stages:
     deps:
       - src/models/train.py
       - src/models/preprocess.py
-      - data/preprocessed/nesrece_v_cestnem_prometu.csv
+      - data/preprocessed/nesrece_v_cestnem_prometu.csv:
+          persist: true
       - data/preprocessed/obcina_vreme_processed.csv
       - data/reference/nesrece_v_cestnem_prometu.csv
     params:
@@ -110,5 +114,6 @@ stages:
       - src/models/preprocess.py
       - models/model_nesrece.pkl
       - models/pipeline_nesrece.pkl
-      - data/preprocessed/nesrece_v_cestnem_prometu.csv
+      - data/preprocessed/nesrece_v_cestnem_prometu.csv:
+          persist: true
       - data/preprocessed/obcina_vreme_processed.csv
