@@ -180,7 +180,7 @@ stages:
       size: 3834
     - path: models/shap_values.npz
       hash: md5
-      md5: 039d34c8bf05c3b7b73a7cd282d73f44
+      md5: c18cc9ca78e9b13a12ab07adfb502a91
       size: 74046
   predict_nesrece:
     cmd: uv run python src/models/predict.py
