@@ -139,16 +139,16 @@ stages:
     deps:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: fd5b21fb2db05a6ee22ed3d3450fddfc
-      size: 14604
+      md5: c3bc6cad751855f68aefabfa7566a03a
+      size: 15864
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: 357e1a622352a9b705ebd3e74fdc980d
-      size: 13831681
+      md5: 5e1009fae09518d60483fc25b4a38850
+      size: 14867301
     - path: data/reference/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: e75615462042703865eb99360228d620
-      size: 18356
+      md5: 07551139dcfe1a326ba7e2ffcf3e237b
+      size: 19885
     - path: src/models/preprocess.py
       hash: md5
       md5: cc2798049cd693a1a2a790d8052558f4
@@ -172,53 +172,40 @@ stages:
       size: 79
     - path: models/model_nesrece.pkl
       hash: md5
-      md5: 2bd618bc81d313ce2feb8ba3b75d1bc1
-      size: 408766
+      md5: 1646334b786632686f15d4a571d2b498
+      size: 944655
     - path: models/pipeline_nesrece.pkl
       hash: md5
-      md5: d29495544ed3f152216137a82f8ed219
+      md5: 7b2e968d070b6be53cf53c73148ecb2a
       size: 3834
-    - path: models/shap_per_obcina.json
-      hash: md5
-      md5: 461d0066c693c312b71133141621c564
-      size: 38367
     - path: models/shap_values.npz
       hash: md5
-      md5: 069af4a79ed7fab07bc61b44b884b383
+      md5: 8f485b790c43e92d424c2f6a93ebfd0a
       size: 74046
   predict_nesrece:
     cmd: uv run python src/models/predict.py
     deps:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 9a5517a4a4a3f66c143039dabfef5360
-      size: 13594
+      md5: c3bc6cad751855f68aefabfa7566a03a
+      size: 15864
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: 567bb5911400f651c4355c508e9bc7d7
-      size: 520210
-    - path: models/model_nesrece.keras
+      md5: 5e1009fae09518d60483fc25b4a38850
+      size: 14867301
+    - path: models/model_nesrece.pkl
       hash: md5
-      md5: 8041c6b2b713c4a7514f40bf101dcc47
-      size: 449809
+      md5: 1646334b786632686f15d4a571d2b498
+      size: 944655
     - path: models/pipeline_nesrece.pkl
       hash: md5
-      md5: 5cac886eadbec81a9ec64410a3f47c4d
+      md5: 7b2e968d070b6be53cf53c73148ecb2a
       size: 3834
     - path: src/models/predict.py
       hash: md5
-      md5: 9e284c28976f0fcd79ceae3418fd82a5
-      size: 4381
+      md5: 1744cebe74d225521d118e0197e53635
+      size: 4006
     - path: src/models/preprocess.py
       hash: md5
-      md5: 47697d65230374e069b7f460255b42af
-      size: 3356
-    outs:
-    - path: data/predictions/hourly.json
-      hash: md5
-      md5: 865d419e26df2e88bc05e6233c7fe708
-      size: 33750
-    - path: data/predictions/today.json
-      hash: md5
-      md5: 0d9f507f6c03eb306b68f8067dd689e5
-      size: 2543
+      md5: cc2798049cd693a1a2a790d8052558f4
+      size: 3084
