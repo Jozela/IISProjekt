@@ -30,6 +30,7 @@ jobs:
         run: |
           dvc pull data/preprocessed/nesrece_v_cestnem_prometu.csv || true
           dvc pull data/preprocessed/obcina_vreme_processed.csv || true
+          cp data/preprocessed/nesrece_v_cestnem_prometu.csv /tmp/nesrece_backup.csv || true
       - name: Run DVC pipeline
         env:
           DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}

@@ -24,7 +24,7 @@ for d in events:
 
 new_df = pd.DataFrame(new_rows)
 
-backup_file = csv_file
+backup_file = "/tmp/nesrece_backup.csv"
 if os.path.exists(backup_file):
     existing_df = pd.read_csv(backup_file)
 
