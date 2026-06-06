@@ -13,15 +13,15 @@ stages:
     outs:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: cd8dd1e625ec773057e7ea72daf62a8f
-      size: 27688
+      md5: 03da653e67cd0be4404a387dca5af05c
+      size: 29402
   preprocess:
     cmd: uv run python src/data/process_spin_data.py
     deps:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: cd8dd1e625ec773057e7ea72daf62a8f
-      size: 27688
+      md5: 03da653e67cd0be4404a387dca5af05c
+      size: 29402
     - path: src/data/process_spin_data.py
       hash: md5
       md5: 35b0258b72287b9fd266a4b9cc9f19fe
@@ -32,8 +32,8 @@ stages:
     outs:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: c3bc6cad751855f68aefabfa7566a03a
-      size: 15864
+      md5: c83a6f2ec8abf22948cfd832bb0e3c0d
+      size: 16086
   fetch_vreme:
     cmd: uv run python src/data/obcina_vreme.py
     deps:
@@ -80,8 +80,8 @@ stages:
     deps:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: c3bc6cad751855f68aefabfa7566a03a
-      size: 15864
+      md5: c83a6f2ec8abf22948cfd832bb0e3c0d
+      size: 16086
     - path: gx/checkpoints/nesrece_checkpoint.yml
       hash: md5
       md5: a5b64045a9f1c64c06aac0cf85c69e07
@@ -118,8 +118,8 @@ stages:
     deps:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: c3bc6cad751855f68aefabfa7566a03a
-      size: 15864
+      md5: c83a6f2ec8abf22948cfd832bb0e3c0d
+      size: 16086
     - path: src/data/test_nesrece_data.py
       hash: md5
       md5: bdcf5fb0b520491f33a6425ca3daf415
@@ -127,12 +127,12 @@ stages:
     outs:
     - path: data/reference/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 07551139dcfe1a326ba7e2ffcf3e237b
-      size: 19885
+      md5: 4b9b1a4bce84ce875255e58306d5584b
+      size: 20141
     - path: reports/nesrece_data_testing_report.html
       hash: md5
-      md5: 7cec3f32f39cce40fcdba428b8e55c50
-      size: 3839222
+      md5: 06113df8cec88e8a27fefa3c545bc0c8
+      size: 3839072
   train_nesrece:
     cmd: "uv run python src/models/train.py\ngit commit -am \"Updated nesrece model
       on $(date)\" || true\ngit push || true\ndvc push || true\n"
