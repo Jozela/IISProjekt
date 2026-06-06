@@ -131,7 +131,7 @@ stages:
       size: 19885
     - path: reports/nesrece_data_testing_report.html
       hash: md5
-      md5: d61dfbb8a09f5f7ff377bad1e6892988
+      md5: 82a5935d12f0ba5cda8998325cc89569
       size: 3839222
   train_nesrece:
     cmd: "uv run python src/models/train.py\ngit commit -am \"Updated nesrece model
