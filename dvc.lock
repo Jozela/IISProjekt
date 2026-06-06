@@ -20,20 +20,20 @@ stages:
     deps:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: fa00f544da16f741f8b33894404f6c19
-      size: 30694
+      md5: 413cdd3239e7d4612fe470934390e1f1
+      size: 42896
     - path: src/data/process_spin_data.py
       hash: md5
-      md5: a3b799ba569dbff20136894d23878c29
-      size: 1379
+      md5: 35b0258b72287b9fd266a4b9cc9f19fe
+      size: 1396
     params:
       params.yaml:
         preprocess.station: all
     outs:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 8c600ade84af990d117ff65faa2ec798
-      size: 673
+      md5: c83a6f2ec8abf22948cfd832bb0e3c0d
+      size: 16086
   fetch_vreme:
     cmd: uv run python src/data/obcina_vreme.py
     deps:
