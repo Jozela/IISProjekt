@@ -627,7 +627,7 @@ function updateLabels(gjLayer, preds) {
   if (map.getZoom() < 9) return;
   gjLayer.eachLayer(layer => {
     const name = layer.feature.properties.OB_UIME || layer.feature.properties.name;
-    const prob = preds[name];
+    const _a = preds[name]; const prob = _a && _a[0] ? parseFloat(_a[0].probability_percent) : null;
     if (prob == null) return;
     L.marker(layer.getBounds().getCenter(), { icon: L.divIcon({
       className: '',
@@ -639,7 +639,7 @@ function updateLabels(gjLayer, preds) {
 
 // ── Top 10 ────────────────────────────────────────────────────────────────────
 function buildTopList(preds, gjLayer) {
-  const sorted = Object.entries(preds).filter(([,v])=>v!=null).sort(([,a],[,b])=>b-a).slice(0,10);
+  const sorted = Object.entries(preds).map(([k,v])=>[k, v&&v[0]?parseFloat(v[0].probability_percent):null]).filter(([,v])=>v!=null).sort(([,a],[,b])=>b-a).slice(0,10);
   const list   = document.getElementById('top-list');
   list.innerHTML = '';
   sorted.forEach(([name, prob], i) => {
