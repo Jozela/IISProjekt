@@ -8,8 +8,8 @@ import pandas as pd
 from preprocess import NesreceWeatherPreprocessor
 
 params = yaml.safe_load(open("/app/params.yaml"))["train_nesrece"]
-NESRECE_PATH = params["nesrece_path"]
-VREME_PATH = params["vreme_path"]
+NESRECE_PATH = os.environ.get("NESRECE_PATH", params["nesrece_path"])
+VREME_PATH = os.environ.get("VREME_PATH", params["vreme_path"])
 WINDOW_SIZE = int(params["window_size"])
 TIME_FREQ = params.get("time_freq", "h")
 

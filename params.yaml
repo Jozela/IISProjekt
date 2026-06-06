@@ -5,7 +5,7 @@ fetch:
 
 fetch_vreme:
   url: "https://api.open-meteo.com/v1/forecast"
-  obcine_path: "/app/data/raw/obcine.json"
+  obcine_path: "data/raw/obcine.json"
   request_sleep: 0.2
   timezone: "Europe/Ljubljana"
   past_days: 30
@@ -15,12 +15,12 @@ preprocess:
   station: "all"
 
 preprocess_vreme:
-  raw_path: "/app/data/raw/obcina_vreme.csv"
-  processed_path: "/app/data/preprocessed/obcina_vreme_processed.csv"
+  raw_path: "data/raw/obcina_vreme.csv"
+  processed_path: "data/preprocessed/obcina_vreme_processed.csv"
 
 train_nesrece:
-  nesrece_path: /app/data/preprocessed/nesrece_v_cestnem_prometu.csv
-  vreme_path:   /app/data/preprocessed/obcina_vreme_processed.csv
+  nesrece_path: data/preprocessed/nesrece_v_cestnem_prometu.csv
+  vreme_path:   data/preprocessed/obcina_vreme_processed.csv
   test_size:    500        # ~2 months of daily data
   window_size:  24         # 7-day look-back instead of 24-hour
   random_state: 42

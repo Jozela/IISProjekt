@@ -59,7 +59,9 @@ ENV PYTHONUNBUFFERED=1 \
     MODEL_PATH=/app/models/model_nesrece.pkl \
     PIPELINE_PATH=/app/models/pipeline_nesrece.pkl \
     MERGER_PATH=/app/models/merger_nesrece.pkl \
-    SHAP_NPZ=/app/models/shap_values.npz
+    SHAP_NPZ=/app/models/shap_values.npz \
+    NESRECE_PATH=/app/data/preprocessed/nesrece_v_cestnem_prometu.csv \
+    VREME_PATH=/app/data/preprocessed/obcina_vreme_processed.csv 
 
 EXPOSE 5001
 
