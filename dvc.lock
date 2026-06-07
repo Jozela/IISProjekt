@@ -13,15 +13,15 @@ stages:
     outs:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: b57d6693bbda641703ec528f59115a92
-      size: 36620
+      md5: 05d820dbb502597e80afa727edf09450
+      size: 34457
   preprocess:
     cmd: uv run python src/data/process_spin_data.py
     deps:
     - path: data/raw/lokacija.json
       hash: md5
-      md5: b57d6693bbda641703ec528f59115a92
-      size: 36620
+      md5: 05d820dbb502597e80afa727edf09450
+      size: 34457
     - path: src/data/process_spin_data.py
       hash: md5
       md5: 35b0258b72287b9fd266a4b9cc9f19fe
@@ -32,8 +32,8 @@ stages:
     outs:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 0e189d6e0a5cec99fc803d360b0ad960
-      size: 16308
+      md5: e3bad580c28a66ce3d974acc2ab6dc8e
+      size: 16837
   fetch_vreme:
     cmd: uv run python src/data/obcina_vreme.py
     deps:
@@ -52,15 +52,15 @@ stages:
     outs:
     - path: data/raw/obcina_vreme.csv
       hash: md5
-      md5: fae8540cece08e7b628d3ccb0aa26361
-      size: 21085262
+      md5: 54b2f7917bf52940d93d76684caafd2f
+      size: 20780735
   preprocess_vreme:
     cmd: uv run python src/data/process_obcina_vreme.py
     deps:
     - path: data/raw/obcina_vreme.csv
       hash: md5
-      md5: fae8540cece08e7b628d3ccb0aa26361
-      size: 21085262
+      md5: 54b2f7917bf52940d93d76684caafd2f
+      size: 20780735
     - path: src/data/process_obcina_vreme.py
       hash: md5
       md5: 16d8d9d17d9a9c1d5ed89bdd7c8a208e
@@ -73,15 +73,15 @@ stages:
     outs:
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: 3b87ab2442f0b235e1ca73b382384994
-      size: 14860926
+      md5: 82594618ce67711bc0c75dd75c61f9dc
+      size: 14556399
   validate_nesrece:
     cmd: "cd gx && uv run python run_checkpoint.py\n"
     deps:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 0e189d6e0a5cec99fc803d360b0ad960
-      size: 16308
+      md5: e3bad580c28a66ce3d974acc2ab6dc8e
+      size: 16837
     - path: gx/checkpoints/nesrece_checkpoint.yml
       hash: md5
       md5: a5b64045a9f1c64c06aac0cf85c69e07
@@ -99,8 +99,8 @@ stages:
     deps:
     - path: data/preprocessed/obcina_vreme_processed.csv
       hash: md5
-      md5: 3b87ab2442f0b235e1ca73b382384994
-      size: 14860926
+      md5: 82594618ce67711bc0c75dd75c61f9dc
+      size: 14556399
     - path: gx/checkpoints/vreme_checkpoint.yml
       hash: md5
       md5: 258afd18a74b9509af3bc5f929662c3b
@@ -118,8 +118,8 @@ stages:
     deps:
     - path: data/preprocessed/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 0e189d6e0a5cec99fc803d360b0ad960
-      size: 16308
+      md5: e3bad580c28a66ce3d974acc2ab6dc8e
+      size: 16837
     - path: src/data/test_nesrece_data.py
       hash: md5
       md5: bdcf5fb0b520491f33a6425ca3daf415
@@ -127,12 +127,12 @@ stages:
     outs:
     - path: data/reference/nesrece_v_cestnem_prometu.csv
       hash: md5
-      md5: 8975dcfddbbb2e5a21405278754fd2bf
-      size: 20430
+      md5: 93d51ca604560e0f9e4ad380ead33630
+      size: 21124
     - path: reports/nesrece_data_testing_report.html
       hash: md5
-      md5: bf5003802eb9e9bebf4f18fe56edafd9
-      size: 3839238
+      md5: 7a52cf44c905f8f750aaf541ad63390a
+      size: 3838652
   train_nesrece:
     cmd: "uv run python src/models/train.py\ngit commit -am \"Updated nesrece model
       on $(date)\" || true\ngit push || true\ndvc push || true\n"
