@@ -31,7 +31,8 @@ COPY params.yaml params.yaml
 COPY data/preprocessed/ data/preprocessed/
 # Copy the models package (NesreceWeatherPreprocessor)
 COPY src/models/ src/models/
-
+COPY reports/ reports/
+COPY src/webapp/admin_route.py src/webapp/admin_route.py
 # Make src importable as a package
 RUN touch src/__init__.py
 

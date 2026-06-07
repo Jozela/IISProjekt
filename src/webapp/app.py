@@ -14,7 +14,10 @@ PREDICTIONS_PATH = os.environ.get("PREDICTIONS_PATH", "/app/data/predictions/nex
 HOURLY_PATH      = os.environ.get("HOURLY_PATH", "/app/data/predictions/hourly.json")
 SHAP_PATH        = os.environ.get("SHAP_PATH", "/app/models/shap_per_obcina.json")
 app.register_blueprint(chat_bp)
+app.secret_key = os.environ.get("SECRET_KEY", "admin-secret-key-change-me")
 
+from admin_route import admin_bp
+app.register_blueprint(admin_bp)
 def load_centroids():
     return load_json(CENTROIDS_PATH) or {}
 
